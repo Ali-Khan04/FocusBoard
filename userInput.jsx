@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./CSS/userInput.css";
-function UserInput() {
+function UserInput({ getTodo }) {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
@@ -13,10 +13,22 @@ function UserInput() {
   const handleDate = (event) => {
     setDate(event.target.value);
   };
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const todos = {
+      title,
+      description,
+      date,
+    };
+    getTodo(todos);
+    setTitle("");
+    setDescription("");
+    setDate("");
+  };
   return (
     <div className="input container">
       <div className="form-container">
-        <form>
+        <form onSubmit={handleSubmit}>
           <label>Title</label>
           <input type="text" value={title} onChange={handleTitle} />
           <label>Description</label>
