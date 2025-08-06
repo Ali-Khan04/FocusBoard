@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "./CSS/userInput.css";
 function UserInput() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -14,15 +15,17 @@ function UserInput() {
   };
   return (
     <div className="input container">
-      <form>
-        <label>Title</label>
-        <input type="text" value={title} onChange={handleTitle} />
-        <label>Description</label>
-        <input type="text" value={description} onChange={handleDescription} />
-        <label>Date</label>
-        <input type="Date" value={date} onChange={handleDate} />
-        <button type="submit">Add</button>
-      </form>
+      <div className="form-container">
+        <form>
+          <label>Title</label>
+          <input type="text" value={title} onChange={handleTitle} />
+          <label>Description</label>
+          <input type="text" value={description} onChange={handleDescription} />
+          <label>Date</label>
+          <input type="Date" value={date} onChange={handleDate} />
+          <button type="submit">Add</button>
+        </form>
+      </div>
     </div>
   );
 }
