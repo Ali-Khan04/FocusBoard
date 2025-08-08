@@ -2,18 +2,26 @@ import UserInput from "./userInput";
 import { useState } from "react";
 function RenderTodo() {
   const [todoArray, setTodoArray] = useState([]);
+  //const [deletedata, setDeleteData] = useState(null);
+
   const handleTodoArray = (newTodo) => {
-    setTodoArray((oldState) => [...oldState, newTodo]);
+    setTodoArray((oldState) => [
+      ...oldState,
+      { ...newTodo, id: Date.now() + Math.random() },
+    ]);
+  };
+  const handleDelete = (id) => {
+    setTodoArray(todoArray.filter((item) => item.id !== id));
   };
   return (
     <div className="render-container">
       <UserInput getTodo={handleTodoArray} />
-      {todoArray.map((item, index) => (
-        <div key={index} className="todo-contianer">
+      {todoArray.map((item) => (
+        <div key={item.id} className="todo-contianer">
           <h1>{item.title}</h1>
           <p>{item.description}</p>
           <p>{item.date}</p>
-          <button>Delete</button>
+          <button onClick={() => handleDelete(item.id)}>Delete</button>
           <button>Update</button>
           <label>Priority</label>
           <select>
