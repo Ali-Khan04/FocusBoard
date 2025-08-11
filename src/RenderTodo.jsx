@@ -2,8 +2,6 @@ import UserInput from "./userInput";
 import { useState } from "react";
 function RenderTodo() {
   const [todoArray, setTodoArray] = useState([]);
-  //const [deletedata, setDeleteData] = useState(null);
-
   const handleTodoArray = (newTodo) => {
     setTodoArray((oldState) => [
       ...oldState,
