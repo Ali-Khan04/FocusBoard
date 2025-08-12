@@ -31,6 +31,7 @@ function UserInput({ getTodo }) {
     } catch (err) {
       console.error("Error saving todo:", err);
     }
+    getTodo(todos);
     setTitle("");
     setDescription("");
     setDate("");
