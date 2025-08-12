@@ -13,14 +13,24 @@ function UserInput({ getTodo }) {
   const handleDate = (event) => {
     setDate(event.target.value);
   };
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const todos = {
       title,
       description,
       date,
     };
-    getTodo(todos);
+    try {
+      await fetch("http://localhost:3000/user/saveTodos", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify(todos),
+      });
+    } catch (err) {
+      console.error("Error saving todo:", err);
+    }
     setTitle("");
     setDescription("");
     setDate("");
@@ -30,11 +40,16 @@ function UserInput({ getTodo }) {
       <div className="form-container">
         <form onSubmit={handleSubmit}>
           <label>Title</label>
-          <input type="text" value={title} onChange={handleTitle} />
+          <input type="text" value={title} onChange={handleTitle} required />
           <label>Description</label>
-          <input type="text" value={description} onChange={handleDescription} />
+          <input
+            type="text"
+            value={description}
+            onChange={handleDescription}
+            required
+          />
           <label>Date</label>
-          <input type="Date" value={date} onChange={handleDate} />
+          <input type="Date" value={date} onChange={handleDate} required />
           <button type="submit">Add</button>
         </form>
       </div>

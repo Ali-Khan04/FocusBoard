@@ -3,7 +3,7 @@ import "./CSS/App.css";
 function App() {
   return (
     <div className="app-container">
-      <h1>todo App</h1>
+      <h1>Todo App</h1>
       <RenderTodo />
     </div>
   );
