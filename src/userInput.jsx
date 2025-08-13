@@ -37,7 +37,7 @@ function UserInput({ getTodo }) {
     setDate("");
   };
   return (
-    <div className="input container">
+    <div className="input-container">
       <div className="form-container">
         <form onSubmit={handleSubmit}>
           <label>Title</label>
