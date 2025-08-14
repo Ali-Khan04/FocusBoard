@@ -1,0 +1,72 @@
+.sign-up-container,
+.sign-in-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.sign-up-container .sign-in-container h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fe3e3e;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 30rem;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+  outline: none;
+  border-color: #ff6b6b;
+  background: #fff9f9;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(255, 107, 107, 0.15);
+}
+
+input[type="text"]::placeholder,
+input[type="email"]::placeholder,
+input[type="password"]::placeholder {
+  color: #999;
+  font-size: 0.95rem;
+}
+
+button {
+  margin-top: 20px;
+  padding: 0.75rem 2rem;
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  align-self: center;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+button:hover {
+  background: #ff5252;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(255, 107, 107, 0.3);
+}
