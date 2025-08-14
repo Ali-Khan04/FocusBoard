@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import userTodosRouter from "./routes/TodosRoute.js";
+import userSignUpRouter from "./routes/userRoute.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 
@@ -17,6 +18,7 @@ app.get("/", (req, res) => {
   res.send("Server running");
 });
 app.use("/user", userTodosRouter);
+app.use("/auth", userSignUpRouter);
 app.listen(3000, () => {
   console.log("Server running in 3000");
 });
