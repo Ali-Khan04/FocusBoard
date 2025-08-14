@@ -1,0 +1,140 @@
+.welcome-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ff6b6b, #ff5252);
+  color: white;
+  font-family: "Arial", sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+.welcome-content {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 5rem 6rem;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  max-width: 800px;
+  width: 100%;
+}
+
+.welcome-content h1 {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  line-height: 1.2;
+  overflow: hidden;
+  border-right: 3px solid white;
+  white-space: nowrap;
+  width: 0;
+  animation: typing 1s steps(24, end) forwards, blink-caret 1s step-end infinite;
+}
+
+@keyframes typing {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+@keyframes blink-caret {
+  from,
+  to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: white;
+  }
+}
+
+.welcome-content p {
+  font-size: 1.25rem;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  line-height: 1.5;
+  animation: fadeInUp 0.5s ease-out 1s both;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 0.95;
+    transform: translateY(0);
+  }
+}
+
+.welcome-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+  animation: fadeInUp 0.5s ease-out 1s both;
+  opacity: 0;
+}
+
+.welcome-buttons button {
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  min-width: 120px;
+}
+
+.signup-btn {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.signup-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.signin-btn {
+  background: #ff4444;
+  box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
+}
+
+.signin-btn:hover {
+  background: #ff3333;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(255, 68, 68, 0.5);
+}
+
+@media (max-width: 600px) {
+  .welcome-content {
+    padding: 2rem;
+  }
+
+  .welcome-content h1 {
+    font-size: 2.25rem;
+  }
+
+  .welcome-content p {
+    font-size: 1rem;
+  }
+
+  .welcome-buttons {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
