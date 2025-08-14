@@ -19,6 +19,15 @@ app.get("/", (req, res) => {
 });
 app.use("/user", userTodosRouter);
 app.use("/auth", userSignUpRouter);
+
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  const message = err.message || "Internal Server Error";
+  return res.status(statusCode).json({
+    statusCode,
+    message,
+  });
+});
 app.listen(3000, () => {
   console.log("Server running in 3000");
 });

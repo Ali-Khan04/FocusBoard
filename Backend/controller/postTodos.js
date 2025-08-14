@@ -1,12 +1,12 @@
 import Todo from "../db/TodoSchema.js";
-export const postTodos = async (req, res) => {
+import { errorHandler } from "../utils/customError.js";
+export const postTodos = async (req, res, next) => {
   const { title, description, date } = req.body;
   const newTodo = new Todo({ title, description, date });
   try {
     await newTodo.save();
-    res.status(201).send("Saved Successfullt");
+    res.status(201).send("Saved Successfully");
   } catch (err) {
-    console.error(err);
-    res.status(500).send("Error saving");
+    next(errorHandler(500, "Error Saving todos"));
   }
 };
