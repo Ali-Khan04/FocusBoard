@@ -61,7 +61,7 @@ function SignUp() {
           value={formData.password}
           onChange={handleFormData}
         />
-        <button>SignUp</button>
+        <button className="button-sign">SignUp</button>
       </form>
       <Link to="/signin">Already have an account? Sign In</Link>
       {errorMsg && <p className="error-message">{errorMsg}</p>}

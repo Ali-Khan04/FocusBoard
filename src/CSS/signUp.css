@@ -1,36 +1,55 @@
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ff6b6b, #ff5252);
+  font-family: "Arial", sans-serif;
+}
+
 .sign-up-container,
 .sign-in-container {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  padding: 5rem 8rem;
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  min-width: 500px;
   max-width: 600px;
-  margin: 2rem auto;
-  padding: 2.5rem;
-  background: rgba(255, 255, 255, 0.95);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), 0 10px 20px rgba(0, 0, 0, 0.1),
-    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+  width: 90%;
+  margin: 2rem;
 }
 
-.sign-up-container .sign-in-container h1 {
+.sign-up-container h1,
+.sign-in-container h1 {
   text-align: center;
   margin-bottom: 2rem;
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  color: #fe3e3e;
+  color: white;
+  text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
 }
 
+/* Inputs */
 input[type="text"],
 input[type="email"],
 input[type="password"] {
-  width: 30rem;
-  padding: 0.75rem;
-  border: 1px solid #ddd;
-  border-radius: 6px;
+  width: 100%;
+  max-width: 35rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  border-radius: 10px;
   font-size: 1rem;
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
   transition: all 0.3s ease;
+  margin-bottom: 1rem;
 }
 
 input[type="text"]:focus,
@@ -38,35 +57,41 @@ input[type="email"]:focus,
 input[type="password"]:focus {
   outline: none;
   border-color: #ff6b6b;
-  background: #fff9f9;
+  background: #fff;
   transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(255, 107, 107, 0.15);
+  box-shadow: 0 4px 10px rgba(255, 107, 107, 0.25);
 }
 
-input[type="text"]::placeholder,
-input[type="email"]::placeholder,
-input[type="password"]::placeholder {
-  color: #999;
-  font-size: 0.95rem;
-}
+.button-sign {
+  margin-top: 1.5rem;
+  padding: 0.9rem 2.2rem;
+  background-color: #fd4343;
 
-button {
-  margin-top: 20px;
-  padding: 0.75rem 2rem;
-  background: #ff6b6b;
-  color: white;
   border: none;
-  border-radius: 6px;
+  border-radius: 12px;
   font-size: 1rem;
   cursor: pointer;
   align-self: center;
   transition: all 0.3s ease;
   font-weight: 600;
   letter-spacing: 0.5px;
+  box-shadow: 0 4px 15px rgba(255, 68, 68, 0.4);
 }
 
-button:hover {
-  background: #ff5252;
+.button-sign:hover {
+  background-color: #f82727;
   transform: translateY(-2px);
-  box-shadow: 0 8px 16px rgba(255, 107, 107, 0.3);
+  box-shadow: 0 8px 25px rgba(255, 68, 68, 0.5);
+}
+
+a {
+  margin-top: 1rem;
+  color: white;
+  text-decoration: underline;
+  font-size: 0.95rem;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: #ffeaea;
 }

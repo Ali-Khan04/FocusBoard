@@ -1,4 +1,5 @@
 import "../CSS/signUp.css";
+import { Link } from "react-router-dom";
 function SignIn() {
   return (
     <div className="sign-in-container">
@@ -6,8 +7,9 @@ function SignIn() {
       <form>
         <input type="email" required placeholder="Email" />
         <input type="password" required placeholder="password" />
-        <button>Sign In</button>
+        <button className="button-sign">Sign In</button>
       </form>
+      <Link to="/signup">No account? Sign Up</Link>
     </div>
   );
 }
