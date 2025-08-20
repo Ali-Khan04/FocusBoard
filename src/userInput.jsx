@@ -1,6 +1,9 @@
 import { useState } from "react";
 import "./CSS/userInput.css";
+import { useContext } from "react";
+import { TodoContext } from "./TodoContext";
 function UserInput({ getTodo }) {
+  const { handleTodoArray } = useContext(TodoContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [date, setDate] = useState("");
@@ -31,7 +34,7 @@ function UserInput({ getTodo }) {
     } catch (err) {
       console.error("Error saving todo:", err);
     }
-    getTodo(todos);
+    handleTodoArray(todos);
     setTitle("");
     setDescription("");
     setDate("");
