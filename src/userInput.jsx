@@ -46,11 +46,12 @@ function UserInput({ getTodo }) {
           <label>Title</label>
           <input type="text" value={title} onChange={handleTitle} required />
           <label>Description</label>
-          <input
-            type="text"
+          <textarea
+            required
+            placeholder="Description"
             value={description}
             onChange={handleDescription}
-            required
+            rows="5"
           />
           <label>Date</label>
           <input type="Date" value={date} onChange={handleDate} required />

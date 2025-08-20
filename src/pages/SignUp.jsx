@@ -34,38 +34,40 @@ function SignUp() {
     setFormData({ name: "", email: "", password: "" });
   };
   return (
-    <div className="sign-up-container">
-      <h1>SignUp</h1>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          required
-          placeholder="Name"
-          id="name"
-          value={formData.name}
-          onChange={handleFormData}
-        />
-        <input
-          type="email"
-          required
-          placeholder="Email"
-          id="email"
-          value={formData.email}
-          onChange={handleFormData}
-        />
-        <input
-          type="password"
-          required
-          placeholder="password"
-          id="password"
-          value={formData.password}
-          onChange={handleFormData}
-        />
-        <button className="button-sign">SignUp</button>
-      </form>
-      <Link to="/signin">Already have an account? Sign In</Link>
-      {errorMsg && <p className="error-message">{errorMsg}</p>}
-      {success && <p className="success-message">{success}</p>}
+    <div className="signup-page">
+      <div className="sign-up-container">
+        <h1>SignUp</h1>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            required
+            placeholder="Name"
+            id="name"
+            value={formData.name}
+            onChange={handleFormData}
+          />
+          <input
+            type="email"
+            required
+            placeholder="Email"
+            id="email"
+            value={formData.email}
+            onChange={handleFormData}
+          />
+          <input
+            type="password"
+            required
+            placeholder="password"
+            id="password"
+            value={formData.password}
+            onChange={handleFormData}
+          />
+          <button className="button-sign">SignUp</button>
+        </form>
+        <Link to="/signin">Already have an account? Sign In</Link>
+        {errorMsg && <p className="error-message">{errorMsg}</p>}
+        {success && <p className="success-message">{success}</p>}
+      </div>
     </div>
   );
 }

@@ -31,6 +31,10 @@
   position: relative;
   overflow: hidden;
   height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .todo-contianer:hover {
@@ -132,6 +136,9 @@
   padding: 0.5rem;
   background: white;
   color: #666;
+}
+.edit-buttons {
+  display: flex;
 }
 
 @media (max-width: 768px) {

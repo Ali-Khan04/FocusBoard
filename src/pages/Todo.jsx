@@ -1,11 +1,22 @@
 import RenderTodo from "../RenderTodo";
-import "../CSS/App.css";
+
 function Todo() {
   return (
-    <div className="app-container">
-      <h1>Todo App</h1>
+    <>
+      <h1
+        style={{
+          textAlign: "center",
+          margin: "1.5rem 0",
+          fontSize: "2.5rem",
+          fontWeight: "bold",
+          color: "#ff5252",
+        }}
+      >
+        Todo App
+      </h1>
+
       <RenderTodo />
-    </div>
+    </>
   );
 }
 

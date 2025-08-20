@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import "../CSS/welcome.css";
 
 export default function Welcome() {
@@ -17,6 +17,21 @@ export default function Welcome() {
             Sign In
           </button>
         </div>
+        <p>
+          <Link
+            to={"/todo"}
+            style={{
+              color: "white",
+              textDecoration: "underline",
+              fontSize: "1rem",
+              fontWeight: "500",
+              marginTop: "1rem",
+              display: "inline-block",
+            }}
+          >
+            or Continue as guest
+          </Link>
+        </p>
       </div>
     </div>
   );

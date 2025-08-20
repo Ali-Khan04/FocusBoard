@@ -16,19 +16,22 @@ function RenderTodo() {
   };
   return (
     <TodoContext.Provider value={{ handleTodoArray }}>
-      <div className="app-container">
+      <>
         <div className="input-section">
           <UserInput />
         </div>
-        <div className="todos-section">
+        <>
           <div className="render-container">
             {todoArray.map((item) => (
               <div key={item.id} className="todo-contianer">
                 <h1>{item.title}</h1>
                 <p>{item.description}</p>
                 <p>{item.date}</p>
-                <button onClick={() => handleDelete(item.id)}>Delete</button>
-                <button>Update</button>
+                <div className="edit-buttons">
+                  <button onClick={() => handleDelete(item.id)}>Delete</button>
+                  <button>Update</button>
+                </div>
+
                 <label>Priority</label>
                 <select>
                   <option value="">Select</option>
@@ -39,8 +42,8 @@ function RenderTodo() {
               </div>
             ))}
           </div>
-        </div>
-      </div>
+        </>
+      </>
     </TodoContext.Provider>
   );
 }

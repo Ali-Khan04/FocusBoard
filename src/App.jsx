@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import "./CSS/App.css";
+
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import Todo from "./pages/Todo";
