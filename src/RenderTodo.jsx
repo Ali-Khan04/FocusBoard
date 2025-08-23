@@ -1,50 +1,42 @@
 import UserInput from "./userInput";
-import { useState } from "react";
 import "./CSS/renderTodo.css";
-import { TodoContext } from "./TodoContext";
+import { useGlobal } from "./context/useGlobal";
 
 function RenderTodo() {
-  const [todoArray, setTodoArray] = useState([]);
-  const handleTodoArray = (newTodo) => {
-    setTodoArray((oldState) => [
-      ...oldState,
-      { ...newTodo, id: Date.now() + Math.random() },
-    ]);
-  };
-  const handleDelete = (id) => {
-    setTodoArray(todoArray.filter((item) => item.id !== id));
-  };
+  const { state, dispatch } = useGlobal();
   return (
-    <TodoContext.Provider value={{ handleTodoArray }}>
+    <>
+      <div className="input-section">
+        <UserInput />
+      </div>
       <>
-        <div className="input-section">
-          <UserInput />
-        </div>
-        <>
-          <div className="render-container">
-            {todoArray.map((item) => (
-              <div key={item.id} className="todo-contianer">
-                <h1>{item.title}</h1>
-                <p>{item.description}</p>
-                <p>{item.date}</p>
-                <div className="edit-buttons">
-                  <button onClick={() => handleDelete(item.id)}>Delete</button>
-                  <button>Update</button>
-                </div>
-
-                <label>Priority</label>
-                <select>
-                  <option value="">Select</option>
-                  <option value="Low">Low</option>
-                  <option value="Medium">Medium</option>
-                  <option value="High">High</option>
-                </select>
+        <div className="render-container">
+          {state.todo.map((item) => (
+            <div key={item.id} className="todo-contianer">
+              <h1>{item.title}</h1>
+              <p>{item.description}</p>
+              <p>{item.date}</p>
+              <div className="edit-buttons">
+                <button
+                  onClick={() => dispatch({ type: "delete", payload: item.id })}
+                >
+                  Delete
+                </button>
+                <button>Update</button>
               </div>
-            ))}
-          </div>
-        </>
+
+              <label>Priority</label>
+              <select>
+                <option value="">Select</option>
+                <option value="Low">Low</option>
+                <option value="Medium">Medium</option>
+                <option value="High">High</option>
+              </select>
+            </div>
+          ))}
+        </div>
       </>
-    </TodoContext.Provider>
+    </>
   );
 }
 

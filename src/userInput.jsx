@@ -1,60 +1,67 @@
-import { useState } from "react";
 import "./CSS/userInput.css";
-import { useContext } from "react";
-import { TodoContext } from "./TodoContext";
-function UserInput({ getTodo }) {
-  const { handleTodoArray } = useContext(TodoContext);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [date, setDate] = useState("");
-  const handleTitle = (event) => {
-    setTitle(event.target.value);
-  };
-  const handleDescription = (event) => {
-    setDescription(event.target.value);
-  };
-  const handleDate = (event) => {
-    setDate(event.target.value);
+import { useGlobal } from "./context/useGlobal";
+
+function UserInput() {
+  const { state, dispatch } = useGlobal();
+  const handleUserInput = (e) => {
+    dispatch({
+      type: "userInput",
+      payload: { id: e.target.id, value: e.target.value },
+    });
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const todos = {
-      title,
-      description,
-      date,
-    };
+    const { title, description, date } = state.userInput;
+    dispatch({
+      type: "todo",
+      payload: {
+        title: title,
+        description: description,
+        date: date,
+      },
+    });
     try {
       await fetch("http://localhost:3000/user/saveTodos", {
         method: "POST",
         headers: {
           "Content-type": "application/json",
         },
-        body: JSON.stringify(todos),
+        body: JSON.stringify({ title, description, date }),
       });
     } catch (err) {
       console.error("Error saving todo:", err);
     }
-    handleTodoArray(todos);
-    setTitle("");
-    setDescription("");
-    setDate("");
+    dispatch({ type: "reset" });
   };
   return (
     <div className="input-container">
       <div className="form-container">
         <form onSubmit={handleSubmit}>
           <label>Title</label>
-          <input type="text" value={title} onChange={handleTitle} required />
+          <input
+            type="text"
+            value={state.userInput.title}
+            onChange={handleUserInput}
+            id="title"
+            required
+          />
           <label>Description</label>
           <textarea
             required
             placeholder="Description"
-            value={description}
-            onChange={handleDescription}
+            value={state.userInput.description}
+            onChange={handleUserInput}
+            id="description"
             rows="5"
           />
           <label>Date</label>
-          <input type="Date" value={date} onChange={handleDate} required />
+          <input
+            type="Date"
+            value={state.userInput.date}
+            onChange={handleUserInput}
+            id="date"
+            required
+          />
           <button type="submit">Add</button>
         </form>
       </div>

@@ -1,37 +1,47 @@
 import "../CSS/signUp.css";
-import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { useGlobal } from "../context/useGlobal";
 
 function SignUp() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
-  const [errorMsg, setErrorMsg] = useState("");
-  const [success, setSuccess] = useState("");
+  const { state, dispatch } = useGlobal();
   const navigate = useNavigate();
   const handleFormData = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+    dispatch({
+      type: "signUp",
+      payload: { id: e.target.id, value: e.target.value },
+    });
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMsg("");
-    setSuccess("");
+    const { name, email, password } = state.userSignUp;
+    dispatch({ type: "clearMessage" });
     try {
-      await fetch("http://localhost:3000/auth/signUp", {
+      const response = await fetch("http://localhost:3000/auth/signUp", {
         method: "POST",
-        headers: { "Content-type": "application/json" },
-        body: JSON.stringify(formData),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
       });
-      setSuccess("User registered successfully!");
-      setTimeout(() => {
-        navigate("/signin");
-      }, 2000);
+      if (response.ok) {
+        dispatch({
+          type: "successMessage",
+          payload: "User registered successfully!",
+        });
+
+        dispatch({ type: "signUpReset" });
+
+        setTimeout(() => {
+          navigate("/signIn");
+        }, 2000);
+      } else {
+        dispatch({
+          type: "errorMessage",
+          payload: data.message || "Registration failed",
+        });
+      }
     } catch (err) {
-      setErrorMsg(err.message);
+      dispatch({ type: "errorMessage", payload: "Error Registering User" });
     }
-    setFormData({ name: "", email: "", password: "" });
+    dispatch({ type: "signUpReset" });
   };
   return (
     <div className="signup-page">
@@ -43,7 +53,7 @@ function SignUp() {
             required
             placeholder="Name"
             id="name"
-            value={formData.name}
+            value={state.userSignUp.name}
             onChange={handleFormData}
           />
           <input
@@ -51,7 +61,7 @@ function SignUp() {
             required
             placeholder="Email"
             id="email"
-            value={formData.email}
+            value={state.userSignUp.email}
             onChange={handleFormData}
           />
           <input
@@ -59,14 +69,23 @@ function SignUp() {
             required
             placeholder="password"
             id="password"
-            value={formData.password}
+            value={state.userSignUp.password}
             onChange={handleFormData}
           />
           <button className="button-sign">SignUp</button>
         </form>
         <Link to="/signin">Already have an account? Sign In</Link>
-        {errorMsg && <p className="error-message">{errorMsg}</p>}
-        {success && <p className="success-message">{success}</p>}
+        {state.flowMessage && (
+          <p
+            className={
+              state.messageType === "success"
+                ? "success-message"
+                : "error-message"
+            }
+          >
+            {state.flowMessage}
+          </p>
+        )}
       </div>
     </div>
   );
