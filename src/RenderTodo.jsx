@@ -4,12 +4,30 @@ import { useGlobal } from "./context/useGlobal";
 
 function RenderTodo() {
   const { state, dispatch } = useGlobal();
+
   return (
     <>
       <div className="input-section">
         <UserInput />
       </div>
       <>
+        <div className="welcome-header">
+          <h2>
+            {!state.user ? (
+              "Sign In for more functionality"
+            ) : (
+              <>
+                Welcome back,
+                <span>{state.user.name}</span> 👋
+              </>
+            )}
+          </h2>
+          <p>
+            {state.todo.length > 0
+              ? "Here is your Todo List for today:"
+              : "Add todos to get started!"}
+          </p>
+        </div>
         <div className="render-container">
           {state.todo.map((item) => (
             <div key={item.id} className="todo-contianer">

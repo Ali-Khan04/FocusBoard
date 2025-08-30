@@ -19,6 +19,7 @@ const initialState = {
   },
   flowMessage: "",
   messageType: "",
+  user: JSON.parse(localStorage.getItem("user")) || null,
 };
 const reducer = (state, action) => {
   switch (action.type) {
@@ -91,6 +92,16 @@ const reducer = (state, action) => {
       };
     case "signUpReset":
       return { ...state, userSignUp: { name: "", email: "", password: "" } };
+    case "SET_USER":
+      localStorage.setItem("user", JSON.stringify(action.payload));
+      return {
+        ...state,
+        user: action.payload,
+      };
+    case "Update_User":
+      return { ...state, user: action.payload };
+    case "logout":
+      return { ...state, user: null, todo: [] };
     default:
       return state;
   }

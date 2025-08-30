@@ -22,6 +22,8 @@ function SignIn() {
         body: JSON.stringify({ email, password }),
       });
       if (response.ok) {
+        const data = await response.json();
+        dispatch({ type: "SET_USER", payload: data.user });
         navigate("/todo");
       } else {
         dispatch({

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./CSS/userInput.css";
 import { useGlobal } from "./context/useGlobal";
 
@@ -63,6 +64,17 @@ function UserInput() {
             required
           />
           <button type="submit">Add</button>
+          <Link
+            to="/dashboard"
+            style={{
+              color: "#ff5252",
+              textDecoration: "none",
+              fontWeight: "bold",
+              textAlign: "center",
+            }}
+          >
+            Go to Dashboard
+          </Link>
         </form>
       </div>
     </div>

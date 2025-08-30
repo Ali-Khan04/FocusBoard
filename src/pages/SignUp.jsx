@@ -21,7 +21,7 @@ function SignUp() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
       });
-      if (response.ok) {
+      if (response.ok) { 
         dispatch({
           type: "successMessage",
           payload: "User registered successfully!",
