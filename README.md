@@ -21,6 +21,26 @@ A comprehensive task management solution built with the **MERN stack** (MongoDB,
 |---------|---------|----------|---------|
 | React   | Express | MongoDB  | CSS |
 
+## 🏗️ **Architecture Highlights**
+
+### **Advanced State Management**
+- **useReducer + Context API** instead of basic useState
+- Centralized state architecture with predictable updates
+- No prop drilling - clean component hierarchy
+- Action-based state mutations (similar to Redux patterns)
+
+### **Scalable Architecture**
+- Custom hooks for reusable logic
+- Separation of concerns with clear folder structure
+- Component composition over inheritance
+- Future-ready for complex features like real-time updates
+
+### **Why This Approach?**
+While most todo apps use simple `useState`, this project demonstrates:
+- How to handle complex state interactions
+- Professional-level React patterns used in production apps
+- Scalable foundation that can grow into larger applications
+
 ---
 ## ⚠️ Disclaimer
 This project is currently under active development. Some features may be missing or incomplete. 
