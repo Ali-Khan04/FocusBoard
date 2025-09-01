@@ -1,0 +1,56 @@
+.not-found {
+  text-align: center;
+  padding: 5rem 2rem;
+  background: white;
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+}
+
+.glitch {
+  font-size: 12rem;
+  position: relative;
+  display: inline-block;
+  color: #ff6b6b;
+  text-shadow: 4px 4px #e53e3e, -4px -4px #ff0066;
+  animation: glitch 1s infinite;
+}
+
+@keyframes glitch {
+  0% {
+    text-shadow: 4px 4px #e53e3e, -4px -4px #e53e3e;
+  }
+  25% {
+    text-shadow: -4px 4px #e53e3e, 4px -4px #e53e3e;
+  }
+  50% {
+    text-shadow: 4px -4px #e53e3e, -4px 4px #e53e3e;
+  }
+  75% {
+    text-shadow: -4px -4px #e53e3e, 4px 4px #e53e3e;
+  }
+  100% {
+    text-shadow: 4px 4px #e53e3e, -4px -4px #e53e3e;
+  }
+}
+
+.home-button {
+  margin-top: 2rem;
+  background: #ff0066;
+  padding: 1rem 2rem;
+  border-radius: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 1.4rem;
+  transition: all 0.2s ease;
+}
+
+.home-button:hover {
+  background: #c90352;
+  color: #111;
+  transform: scale(1.08);
+}

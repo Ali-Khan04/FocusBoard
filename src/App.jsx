@@ -5,6 +5,7 @@ import SignIn from "./pages/SignIn";
 import Todo from "./pages/Todo";
 import Welcome from "./pages/Welcome";
 import Dashboard from "./pages/Dashboard";
+import NotFound from "./pages/NotFound";
 function App() {
   return (
     <BrowserRouter>
@@ -16,6 +17,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/dashboard" element={<Dashboard />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </BrowserRouter>
   );
