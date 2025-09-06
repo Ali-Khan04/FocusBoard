@@ -28,6 +28,7 @@ function UserInput() {
           "Content-type": "application/json",
         },
         body: JSON.stringify({ title, description, date }),
+        credentials: "include",
       });
     } catch (err) {
       console.error("Error saving todo:", err);

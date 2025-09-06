@@ -5,6 +5,8 @@ import { errorHandler } from "../utils/customError.js";
 
 export const signIn = async (req, res, next) => {
   const { email, password } = req.body;
+  if (!email || !password)
+    return next(errorHandler(500, "Required Fields Missing"));
   try {
     const validUser = await User.findOne({ email });
     if (!validUser)
@@ -18,17 +20,21 @@ export const signIn = async (req, res, next) => {
       expiresIn: "1d",
     });
 
-    const { password: hashedPassword, ...rest } = validUser._doc;
-
     res
       .cookie("token", token, {
         httpOnly: true,
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
-        secure: process.env.NODE_ENV === "production",
-        sameSite: "strict",
+        secure: false,
+        sameSite: "lax",
       })
-      .status(200)
-      .json({ success: true, user: rest });
+      .status(201)
+      .json({
+        user: {
+          _id: validUser._id,
+          name: validUser.name,
+          email: validUser.email,
+        },
+      });
   } catch (err) {
     next(errorHandler(500, "Error during Sign in"));
   }

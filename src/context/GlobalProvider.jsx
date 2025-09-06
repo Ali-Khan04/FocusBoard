@@ -101,6 +101,7 @@ const reducer = (state, action) => {
     case "Update_User":
       return { ...state, user: action.payload };
     case "logout":
+      localStorage.removeItem("user");
       return { ...state, user: null, todo: [] };
     default:
       return state;
