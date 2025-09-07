@@ -1,3 +1,8 @@
+# 📝 Fullstack Todo App
+
+A comprehensive task management solution built with the **MERN stack** (MongoDB, Express.js, React, Node.js). This app empowers users to organize their tasks, set priorities, and manage deadlines effectively, all with a clean and modern UI.
+
+---
 * ✅ **User Authentication** (JWT-based)
 * 👤 **User Dashboard** with personalized experience
 * 🗂️ **CRUD Operations** on todos
