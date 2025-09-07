@@ -1,6 +1,6 @@
 import "../CSS/signUp.css";
 import { Link } from "react-router-dom";
-import { useGlobal } from "../context/useGlobal.jsx";
+import { useGlobal } from "../hooks/useGlobal.jsx";
 import { useNavigate } from "react-router-dom";
 function SignIn() {
   const navigate = useNavigate();
@@ -20,6 +20,7 @@ function SignIn() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
+        credentials: "include",
       });
       if (response.ok) {
         const data = await response.json();

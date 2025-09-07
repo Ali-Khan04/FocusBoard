@@ -1,5 +1,5 @@
 import { Outlet, Navigate } from "react-router-dom";
-import { useGlobal } from "./context/useGlobal";
+import { useGlobal } from "./hooks/useGlobal.jsx";
 
 function ProtectedRoute() {
   const { state } = useGlobal();

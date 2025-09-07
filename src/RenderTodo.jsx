@@ -1,9 +1,28 @@
 import UserInput from "./userInput";
 import "./CSS/renderTodo.css";
-import { useGlobal } from "./context/useGlobal";
+import { useGlobal } from "./hooks/useGlobal.jsx";
+import { useTodos } from "./hooks/useTodos.jsx";
 
 function RenderTodo() {
   const { state, dispatch } = useGlobal();
+  const { loading, error, fetchTodos } = useTodos();
+
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <p>Loading your todos...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="error-container">
+        <p>Error: {error}</p>
+        <button onClick={fetchTodos}>Retry</button>
+      </div>
+    );
+  }
 
   return (
     <>

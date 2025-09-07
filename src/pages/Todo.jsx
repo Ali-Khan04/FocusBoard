@@ -1,4 +1,4 @@
-import { useGlobal } from "../context/useGlobal";
+import { useGlobal } from "../hooks/useGlobal.jsx";
 import { useNavigate } from "react-router-dom";
 import RenderTodo from "../RenderTodo";
 

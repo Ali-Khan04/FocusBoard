@@ -1,6 +1,6 @@
 import "../CSS/signUp.css";
 import { useNavigate, Link } from "react-router-dom";
-import { useGlobal } from "../context/useGlobal";
+import { useGlobal } from "../hooks/useGlobal.jsx";
 
 function SignUp() {
   const { state, dispatch } = useGlobal();
@@ -21,7 +21,7 @@ function SignUp() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, password }),
       });
-      if (response.ok) { 
+      if (response.ok) {
         dispatch({
           type: "successMessage",
           payload: "User registered successfully!",

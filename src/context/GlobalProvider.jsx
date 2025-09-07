@@ -61,6 +61,16 @@ const reducer = (state, action) => {
           [action.payload.id]: action.payload.value,
         },
       };
+
+    case "SET_TODOS":
+      return {
+        ...state,
+        todo: (action.payload || []).map((todo) => ({
+          ...todo,
+          id: todo._id || todo.id,
+        })),
+      };
+
     case "successMessage":
       return {
         ...state,

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import "./CSS/userInput.css";
-import { useGlobal } from "./context/useGlobal";
+import { useGlobal } from "./hooks/useGlobal";
 
 function UserInput() {
   const { state, dispatch } = useGlobal();

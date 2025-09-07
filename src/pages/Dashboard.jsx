@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import defaultImage from "../assets/imageSkeleton.png";
 import "../CSS/Dashboard.css";
-import { useGlobal } from "../context/useGlobal";
+import { useGlobal } from "../hooks/useGlobal.jsx";
 
 function Dashboard() {
   const { state, dispatch } = useGlobal();
