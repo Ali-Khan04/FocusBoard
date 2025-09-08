@@ -25,7 +25,12 @@ export const useTodos = () => {
         dispatch({ type: "SET_TODOS", payload: data.todos });
         setHasInitialFetch(true);
       } else {
-        setError("Failed to fetch todos");
+        if (response.status === 404 || response.status === 200) {
+          dispatch({ type: "SET_TODOS", payload: [] });
+          setHasInitialFetch(true);
+        } else {
+          setError("Failed to fetch todos");
+        }
       }
     } catch (err) {
       setError("Error fetching todos");
@@ -39,12 +44,13 @@ export const useTodos = () => {
     if (state.user && !hasInitialFetch && !loading) {
       fetchTodos();
     }
-  }, [state.user, hasInitialFetch, loading]);
+  }, [state.user, hasInitialFetch]);
 
   useEffect(() => {
     if (!state.user) {
       setHasInitialFetch(false);
       setError(null);
+      dispatch({ type: "SET_TODOS", payload: [] });
     }
   }, [state.user]);
 
