@@ -3,6 +3,8 @@ import mongoose from "mongoose";
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
+    maxlength: [30, "Name exceeds its limit"],
+    minlength: [3, "Name should atleast be 3 characters long"],
     unique: false,
     required: true,
   },

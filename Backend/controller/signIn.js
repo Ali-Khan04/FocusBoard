@@ -2,12 +2,18 @@ import User from "../db/userSchema.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { errorHandler } from "../utils/customError.js";
+import validator from "validator";
 
 export const signIn = async (req, res, next) => {
   const { email, password } = req.body;
   if (!email || !password)
     return next(errorHandler(500, "Required Fields Missing"));
   try {
+    if (typeof email !== "string")
+      return next(errorHandler(400, "Invalid email"));
+    if (!validator.isEmail(email)) {
+      return next(errorHandler(400, "Invalid email format"));
+    }
     const validUser = await User.findOne({ email });
     if (!validUser)
       return res.status(401).json({ message: "Invalid Email or Password" });

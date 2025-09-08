@@ -2,13 +2,13 @@ import mongoose from "mongoose";
 
 const todoSchema = new mongoose.Schema({
   title: {
-    type: "string",
-    unique: false,
+    type: String,
+    maxlength: [30, "Title exceeds its limit"],
     required: true,
   },
   description: {
-    type: "string",
-    unique: false,
+    type: String,
+    maxlength: [500, "Description exceeds its limit"],
     required: true,
   },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },

@@ -5,9 +5,12 @@ import userSignUpRouter from "./routes/userRoute.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
+import rateLimit from "express-rate-limit";
+import helmet from "helmet";
 
 const app = express();
 app.use(cookieParser());
+app.use(helmet());
 app.use(express.json());
 app.use(
   cors({
@@ -21,11 +24,17 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.log("MongoDB connection failed", err));
 
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10,
+  message: "Too many login attempts, try again later",
+});
+
 app.get("/", (req, res) => {
   res.send("Server running");
 });
 app.use("/user", userTodosRouter);
-app.use("/auth", userSignUpRouter);
+app.use("/auth", authLimiter, userSignUpRouter);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;
