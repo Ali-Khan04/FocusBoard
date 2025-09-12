@@ -12,6 +12,15 @@ const todoSchema = new mongoose.Schema({
     required: true,
   },
   user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+  priority: {
+    type: String,
+    enum: ["Low", "Medium", "High"],
+    default: "Medium",
+  },
+  completed: {
+    type: Boolean,
+    default: false,
+  },
   date: { type: Date, required: true },
 });
 const Todo = mongoose.model("Todo", todoSchema);

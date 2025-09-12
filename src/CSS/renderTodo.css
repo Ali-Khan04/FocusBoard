@@ -40,7 +40,7 @@
   align-items: start;
 }
 
-.todo-contianer {
+.todo-container {
   background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
   border-radius: 20px;
@@ -57,13 +57,13 @@
   align-items: center;
 }
 
-.todo-contianer:hover {
+.todo-container:hover {
   transform: translateY(-2px);
   box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2), 0 15px 30px rgba(0, 0, 0, 0.15),
     inset 0 1px 0 rgba(255, 255, 255, 0.6);
 }
 
-.todo-contianer h1 {
+.todo-container h1 {
   font-size: 1.5rem;
   font-weight: 700;
   color: #fe3e3e;
@@ -71,7 +71,7 @@
   text-shadow: 0 2px 4px rgba(254, 62, 62, 0.1);
 }
 
-.todo-contianer p {
+.todo-container p {
   color: #666;
   font-size: 1rem;
   line-height: 1.6;
@@ -79,14 +79,14 @@
   text-align: left;
 }
 
-.todo-contianer p:last-of-type {
+.todo-container p:last-of-type {
   color: #888;
   font-size: 0.9rem;
   font-style: italic;
   margin-bottom: 1.5rem;
 }
 
-.todo-contianer button {
+.todo-container button {
   margin: 0.5rem 0.75rem 0.5rem 0;
   padding: 0.6rem 1.5rem;
   font-size: 0.9rem;
@@ -97,28 +97,28 @@
   overflow: hidden;
 }
 
-.todo-contianer button:first-of-type {
+.todo-container button:first-of-type {
   background: linear-gradient(135deg, #ff6b6b, #ff5252);
 }
 
-.todo-contianer button:first-of-type:hover {
+.todo-container button:first-of-type:hover {
   background: linear-gradient(135deg, #ff5252, #e53e3e);
   transform: translateY(-1px);
   box-shadow: 0 6px 12px rgba(255, 107, 107, 0.4);
 }
 
-.todo-contianer button:nth-of-type(2) {
+.todo-container button:nth-of-type(2) {
   background: linear-gradient(135deg, #4ecdc4, #44a08d);
   color: white;
 }
 
-.todo-contianer button:nth-of-type(2):hover {
+.todo-container button:nth-of-type(2):hover {
   background: linear-gradient(135deg, #44a08d, #3d8b85);
   transform: translateY(-1px);
   box-shadow: 0 6px 12px rgba(78, 205, 196, 0.4);
 }
 
-.todo-contianer label {
+.todo-container label {
   font-size: 0.85rem;
   font-weight: 600;
   color: #555;
@@ -126,7 +126,7 @@
   display: block;
 }
 
-.todo-contianer select {
+.todo-container select {
   padding: 0.6rem 0.75rem;
   border: 2px solid #ddd;
   border-radius: 8px;
@@ -139,7 +139,7 @@
   min-width: 120px;
 }
 
-.todo-contianer select:focus {
+.todo-container select:focus {
   outline: none;
   border-color: #ff6b6b;
   background: #fff9f9;
@@ -147,12 +147,12 @@
   box-shadow: 0 4px 8px rgba(255, 107, 107, 0.15);
 }
 
-.todo-contianer select:hover {
+.todo-container select:hover {
   border-color: #ff8a80;
   background: rgba(255, 255, 255, 0.95);
 }
 
-.todo-contianer select option {
+.todo-container select option {
   padding: 0.5rem;
   background: white;
   color: #666;

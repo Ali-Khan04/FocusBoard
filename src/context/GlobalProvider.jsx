@@ -70,6 +70,15 @@ const reducer = (state, action) => {
           id: todo._id || todo.id,
         })),
       };
+    case "updateTodoPriority":
+      return {
+        ...state,
+        todo: state.todo.map((todo) =>
+          todo.id === action.payload.id
+            ? { ...todo, priority: action.payload.priority }
+            : todo
+        ),
+      };
 
     case "successMessage":
       return {
