@@ -1,15 +1,14 @@
 import Todo from "../db/TodoSchema.js";
 import { errorHandler } from "../utils/customError.js";
 export const postTodos = async (req, res, next) => {
-  const { title, description, date, priority = "Medium" } = req.body;
+  const { title, description, dueDate, priority = "Medium" } = req.body;
 
-  if (!title || !description || !date)
+  if (!title || !description || !dueDate)
     return next(errorHandler(500, "Required Fields Missing"));
-
   const newTodo = new Todo({
     title,
     description,
-    date,
+    dueDate,
     priority,
     user: req.user.id,
   });
@@ -21,35 +20,13 @@ export const postTodos = async (req, res, next) => {
       id: savedTodo._id,
       title: savedTodo.title,
       description: savedTodo.description,
-      date: savedTodo.date,
+      dueDate: savedTodo.dueDate,
       priority: savedTodo.priority,
       completed: savedTodo.completed,
       createdAt: savedTodo.createdAt,
     });
   } catch (err) {
     next(errorHandler(500, "Error Saving todos"));
-  }
-};
-
-export const getTodos = async (req, res, next) => {
-  try {
-    const todos = await Todo.find({ user: req.user.id }).sort({
-      createdAt: -1,
-    });
-
-    const formattedTodos = todos.map((todo) => ({
-      id: todo._id,
-      title: todo.title,
-      description: todo.description,
-      date: todo.date,
-      priority: todo.priority,
-      completed: todo.completed,
-      createdAt: todo.createdAt,
-    }));
-
-    res.status(200).json(formattedTodos);
-  } catch (err) {
-    next(errorHandler(500, "Error fetching todos"));
   }
 };
 

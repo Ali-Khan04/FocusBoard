@@ -6,7 +6,7 @@ const initialState = {
   userInput: {
     title: "",
     description: "",
-    date: "",
+    dueDate: new Date().toISOString().split("T")[0], // Default to today
   },
   userSignUp: {
     name: "",
@@ -101,12 +101,13 @@ const reducer = (state, action) => {
         messageType: "",
       };
     case "reset":
+      const today = new Date().toISOString().split("T")[0]; // Set dueDate to today because past dates are not allowed
       return {
         ...state,
         userInput: {
           title: "",
           description: "",
-          date: "",
+          dueDate: today,
         },
       };
     case "signUpReset":

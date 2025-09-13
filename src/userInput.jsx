@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./CSS/userInput.css";
 import { useGlobal } from "./hooks/useGlobal";
@@ -6,6 +6,15 @@ import { useGlobal } from "./hooks/useGlobal";
 function UserInput() {
   const { state, dispatch } = useGlobal();
   const [selectedPriority, setSelectedPriority] = useState("Medium");
+
+  // Set default date to today
+  useEffect(() => {
+    const today = new Date().toISOString().split("T")[0];
+    dispatch({
+      type: "userInput",
+      payload: { id: "dueDate", value: today },
+    });
+  }, []);
 
   const handleUserInput = (e) => {
     dispatch({
@@ -16,7 +25,7 @@ function UserInput() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const { title, description, date } = state.userInput;
+    const { title, description, dueDate } = state.userInput;
 
     try {
       const response = await fetch("http://localhost:3000/user/saveTodos", {
@@ -28,7 +37,7 @@ function UserInput() {
         body: JSON.stringify({
           title,
           description,
-          date,
+          dueDate,
           priority: selectedPriority || "Medium",
         }),
       });
@@ -51,6 +60,13 @@ function UserInput() {
       });
       dispatch({ type: "reset" });
       setSelectedPriority("Medium");
+
+      // Reset date to today after submission
+      const today = new Date().toISOString().split("T")[0];
+      dispatch({
+        type: "userInput",
+        payload: { id: "dueDate", value: today },
+      });
     } catch (err) {
       console.error("Error saving todo:", err);
       dispatch({
@@ -70,6 +86,7 @@ function UserInput() {
             value={state.userInput.title}
             onChange={handleUserInput}
             id="title"
+            maxLength={30}
             required
           />
           <label>Description</label>
@@ -80,15 +97,18 @@ function UserInput() {
             onChange={handleUserInput}
             id="description"
             rows="5"
+            maxLength={500}
           />
-          <label>Date</label>
+          <label>Due Date</label>
           <input
             type="date"
-            value={state.userInput.date}
+            value={state.userInput.dueDate}
             onChange={handleUserInput}
-            id="date"
+            id="dueDate"
+            min={new Date().toISOString().split("T")[0]} // Prevents users from selecting past dates
             required
           />
+
           <label>Priority</label>
           <select
             value={selectedPriority}
@@ -104,7 +124,9 @@ function UserInput() {
             <option value="Medium">Medium</option>
             <option value="High">High</option>
           </select>
-          <button type="submit">Add</button>
+
+          <button type="submit">Add Todo</button>
+
           <Link
             to="/dashboard"
             style={{
@@ -112,6 +134,8 @@ function UserInput() {
               textDecoration: "none",
               fontWeight: "bold",
               textAlign: "center",
+              display: "block",
+              marginTop: "10px",
             }}
           >
             Go to Dashboard

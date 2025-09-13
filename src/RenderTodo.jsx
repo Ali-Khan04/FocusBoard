@@ -34,6 +34,8 @@ function RenderTodo() {
         type: "updateTodoPriority",
         payload: { id: todoId, priority: newPriority },
       });
+      //fetch todos for latest re-order
+      await fetchTodos();
     } catch (error) {
       console.error("Error updating priority:", error);
       alert("Failed to update priority. Please try again.");
@@ -44,16 +46,6 @@ function RenderTodo() {
 
   const handlePriorityChange = (todoId, newPriority) => {
     updateTodoPriority(todoId, newPriority);
-  };
-
-  const getSortedTodos = () => {
-    const priorityOrder = { High: 3, Medium: 2, Low: 1 };
-
-    return [...state.todo].sort((a, b) => {
-      const aPriority = a.priority || "Medium";
-      const bPriority = b.priority || "Medium";
-      return priorityOrder[bPriority] - priorityOrder[aPriority];
-    });
   };
 
   const getPriorityColor = (priority) => {
@@ -85,7 +77,7 @@ function RenderTodo() {
       </div>
     );
   }
-  const sortedTodos = getSortedTodos();
+  const todos = state.todo;
 
   return (
     <>
@@ -100,18 +92,18 @@ function RenderTodo() {
             ) : (
               <>
                 Welcome back,
-                <span>{state.user.name}</span> 👋
+                <span> {state.user.name}</span> 👋
               </>
             )}
           </h2>
           <p>
-            {state.todo.length > 0
-              ? "Here is your Todo List for today (sorted by priority):"
+            {todos.length > 0
+              ? "Here are your todos (sorted by priority):"
               : "Add todos to get started!"}
           </p>
         </div>
         <div className="render-container">
-          {sortedTodos.map((item) => {
+          {todos.map((item) => {
             const itemPriority = item.priority || "Medium";
             const isUpdating = updatingPriority[item.id];
 
@@ -141,10 +133,15 @@ function RenderTodo() {
                   </span>
                 </div>
                 <p>{item.description}</p>
-                <p>{item.date}</p>
+                <p>Due: {item.dueDate}</p>
+                {item.createdAt && (
+                  <p style={{ fontSize: "12px", color: "#666" }}>
+                    Created: {item.createdAt}
+                  </p>
+                )}
 
                 <div className="priority-section">
-                  <label>Priority</label>
+                  <label>Change Priority:</label>
                   <select
                     value={itemPriority}
                     onChange={(e) =>
