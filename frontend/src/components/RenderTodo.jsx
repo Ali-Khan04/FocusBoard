@@ -1,8 +1,10 @@
 import { useState } from "react";
-import UserInput from "./userInput";
-import "./CSS/renderTodo.css";
-import { useGlobal } from "./hooks/useGlobal.jsx";
-import { useTodos } from "./hooks/useTodos.jsx";
+import UserInput from "./userInput.jsx";
+import "../CSS/renderTodo.css";
+import { useGlobal } from "../hooks/useGlobal.jsx";
+import { useTodos } from "../hooks/useTodos.jsx";
+import Button from "./Button.jsx";
+import { apiRequest } from "../services/api.js";
 
 function RenderTodo() {
   const { state, dispatch } = useGlobal();
@@ -10,49 +12,37 @@ function RenderTodo() {
   const [updatingPriority, setUpdatingPriority] = useState({});
 
   const updateTodoPriority = async (todoId, newPriority) => {
-    // for  Guest mode
+    // for guest mode
     if (state.isGuest) {
       dispatch({
         type: "updateTodoPriority",
         payload: { id: todoId, priority: newPriority },
       });
-      setTimeout(() => {
-        const priorityOrder = { High: 1, Medium: 2, Low: 3 };
-        const sortedTodos = [...state.todo].sort((a, b) => {
-          const aPriority = priorityOrder[a.priority] || 2;
-          const bPriority = priorityOrder[b.priority] || 2;
-          return aPriority - bPriority;
-        });
-        dispatch({ type: "SET_TODOS", payload: sortedTodos });
-      }, 0);
+
+      const priorityOrder = { High: 1, Medium: 2, Low: 3 };
+      const sortedTodos = [...state.todo].sort((a, b) => {
+        const aPriority = priorityOrder[a.priority] || 2;
+        const bPriority = priorityOrder[b.priority] || 2;
+        return aPriority - bPriority;
+      });
+      dispatch({ type: "SET_TODOS", payload: sortedTodos });
 
       return;
     }
+
     setUpdatingPriority((prev) => ({ ...prev, [todoId]: true }));
 
     try {
-      const response = await fetch(
-        `http://localhost:3000/user/updatePriority/${todoId}`,
-        {
-          method: "PATCH",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include",
-          body: JSON.stringify({ priority: newPriority }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to update priority");
-      }
+      await apiRequest(`/user/updatePriority/${todoId}`, "PATCH", {
+        priority: newPriority,
+      });
 
       dispatch({
         type: "updateTodoPriority",
         payload: { id: todoId, priority: newPriority },
       });
 
-      // Fetch todos for immediate re-order
+      // Fetch todos for immdediate re-order
       await fetchTodos();
     } catch (error) {
       console.error("Error updating priority:", error);
@@ -196,14 +186,14 @@ function RenderTodo() {
                 </div>
 
                 <div className="edit-buttons">
-                  <button
+                  <Button
                     onClick={() =>
                       dispatch({ type: "delete", payload: item.id })
                     }
                   >
                     Delete
-                  </button>
-                  <button>Update</button>
+                  </Button>
+                  <Button>Update</Button>
                 </div>
               </div>
             );

@@ -1,8 +1,11 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import "./CSS/userInput.css";
-import { useGlobal } from "./hooks/useGlobal";
-import { useTodos } from "./hooks/useTodos";
+import "../CSS/userInput.css";
+import { useGlobal } from "../hooks/useGlobal";
+import { useTodos } from "../hooks/useTodos";
+import Input from "./Input";
+import Button from "./Button";
+import { apiRequest } from "../services/api";
 
 function UserInput() {
   const { state, dispatch } = useGlobal();
@@ -75,25 +78,13 @@ function UserInput() {
       return;
     }
     try {
-      const response = await fetch("http://localhost:3000/user/saveTodos", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({
-          title,
-          description,
-          dueDate,
-          priority: selectedPriority || "Medium",
-        }),
+      const savedTodo = await apiRequest("/user/saveTodos", "POST", {
+        title,
+        description,
+        dueDate,
+        priority: selectedPriority || "Medium",
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to save todo");
-      }
-
-      const savedTodo = await response.json();
       dispatch({
         type: "todo",
         payload: {
@@ -131,7 +122,7 @@ function UserInput() {
       <div className="form-container">
         <form onSubmit={handleSubmit}>
           <label>Title</label>
-          <input
+          <Input
             type="text"
             value={state.userInput.title}
             onChange={handleUserInput}
@@ -150,7 +141,7 @@ function UserInput() {
             maxLength={500}
           />
           <label>Due Date</label>
-          <input
+          <Input
             type="date"
             value={state.userInput.dueDate}
             onChange={handleUserInput}
@@ -175,7 +166,7 @@ function UserInput() {
             <option value="High">High</option>
           </select>
 
-          <button type="submit">Add Todo</button>
+          <Button type="submit">Add Todo</Button>
 
           {state.isGuest && (
             <p

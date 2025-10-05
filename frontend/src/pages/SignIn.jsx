@@ -2,6 +2,9 @@ import "../CSS/signUp.css";
 import { Link } from "react-router-dom";
 import { useGlobal } from "../hooks/useGlobal.jsx";
 import { useNavigate } from "react-router-dom";
+import Input from "../components/Input.jsx";
+import Button from "../components/Button.jsx";
+import { apiRequest } from "../services/api.js";
 
 function SignIn() {
   const navigate = useNavigate();
@@ -20,29 +23,19 @@ function SignIn() {
     dispatch({ type: "clearMessage" });
 
     try {
-      const response = await fetch("http://localhost:3000/auth/signIn", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-        credentials: "include",
+      const data = await apiRequest("/auth/signIn", "POST", {
+        email,
+        password,
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        dispatch({ type: "SET_USER", payload: data.user });
-        dispatch({ type: "successMessage", payload: "Sign In Successful!" });
-        navigate("/todo");
-      } else {
-        const data = await response.json();
-        dispatch({
-          type: "errorMessage",
-          payload: data.message || "SignIn failed",
-        });
-      }
+      dispatch({ type: "SET_USER", payload: data.user });
+      dispatch({ type: "successMessage", payload: "Sign In Successful!" });
+      navigate("/todo");
     } catch (err) {
       dispatch({
         type: "errorMessage",
-        payload: "Error Signing In. Please check your connection.",
+        payload:
+          err.message || "Error Signing In. Please check your connection.",
       });
     }
   };
@@ -61,7 +54,7 @@ function SignIn() {
       <div className="sign-in-container">
         <h1>Sign in</h1>
         <form onSubmit={handleSubmit}>
-          <input
+          <Input
             type="email"
             required
             placeholder="Email"
@@ -69,7 +62,7 @@ function SignIn() {
             value={state.userSignIn.email}
             onChange={hanldeUserInput}
           />
-          <input
+          <Input
             type="password"
             required
             placeholder="Password"
@@ -77,13 +70,13 @@ function SignIn() {
             value={state.userSignIn.password}
             onChange={hanldeUserInput}
           />
-          <button type="submit" className="button-sign">
+          <Button type="submit" className="button-sign">
             Sign In
-          </button>
+          </Button>
         </form>
 
         {/* Guest Mode Button */}
-        <button
+        <Button
           type="button"
           onClick={handleGuestMode}
           className="button-guest"
@@ -100,7 +93,7 @@ function SignIn() {
           }}
         >
           Continue as Guest
-        </button>
+        </Button>
 
         <Link to="/signup">No account? Sign Up</Link>
 

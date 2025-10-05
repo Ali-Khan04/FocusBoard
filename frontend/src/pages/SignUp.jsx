@@ -1,6 +1,9 @@
 import "../CSS/signUp.css";
 import { useNavigate, Link } from "react-router-dom";
 import { useGlobal } from "../hooks/useGlobal.jsx";
+import Button from "../components/Button.jsx";
+import Input from "../components/Input.jsx";
+import { apiRequest } from "../services/api.js";
 
 function SignUp() {
   const { state, dispatch } = useGlobal();
@@ -14,41 +17,40 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, email, password } = state.userSignUp;
-    dispatch({ type: "clearMessage" });
+
     try {
-      const response = await fetch("http://localhost:3000/auth/signUp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+      const data = await apiRequest("/auth/signUp", "POST", {
+        name,
+        email,
+        password,
       });
-      if (response.ok) {
-        dispatch({
-          type: "successMessage",
-          payload: "User registered successfully!",
-        });
 
-        dispatch({ type: "signUpReset" });
+      dispatch({
+        type: "successMessage",
+        payload: "User registered successfully!",
+      });
 
-        setTimeout(() => {
-          navigate("/signIn");
-        }, 2000);
-      } else {
-        dispatch({
-          type: "errorMessage",
-          payload: data.message || "Registration failed",
-        });
-      }
+      dispatch({ type: "signUpReset" });
+
+      setTimeout(() => {
+        navigate("/signIn");
+      }, 2000);
     } catch (err) {
-      dispatch({ type: "errorMessage", payload: "Error Registering User" });
+      dispatch({
+        type: "errorMessage",
+        payload: err.message || "Error registering user",
+      });
     }
-    dispatch({ type: "signUpReset" });
+    setTimeout(() => {
+      dispatch({ type: "clearMessage" });
+    }, 2000);
   };
   return (
     <div className="signup-page">
       <div className="sign-up-container">
         <h1>SignUp</h1>
         <form onSubmit={handleSubmit}>
-          <input
+          <Input
             type="text"
             required
             placeholder="Name"
@@ -56,7 +58,7 @@ function SignUp() {
             value={state.userSignUp.name}
             onChange={handleFormData}
           />
-          <input
+          <Input
             type="email"
             required
             placeholder="Email"
@@ -64,7 +66,7 @@ function SignUp() {
             value={state.userSignUp.email}
             onChange={handleFormData}
           />
-          <input
+          <Input
             type="password"
             required
             placeholder="password"
@@ -72,7 +74,7 @@ function SignUp() {
             value={state.userSignUp.password}
             onChange={handleFormData}
           />
-          <button className="button-sign">SignUp</button>
+          <Button className="button-sign">SignUp</Button>
         </form>
         <Link to="/signin">Already have an account? Sign In</Link>
         {state.flowMessage && (

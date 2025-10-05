@@ -1,6 +1,6 @@
 import { useGlobal } from "../hooks/useGlobal.jsx";
 import { useNavigate } from "react-router-dom";
-import RenderTodo from "../RenderTodo";
+import RenderTodo from "../components/RenderTodo.jsx";
 
 function Todo() {
   const { dispatch, state } = useGlobal();

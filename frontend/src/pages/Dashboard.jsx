@@ -2,6 +2,8 @@ import { useState, useRef } from "react";
 import defaultImage from "../assets/imageSkeleton.png";
 import "../CSS/Dashboard.css";
 import { useGlobal } from "../hooks/useGlobal.jsx";
+import Input from "../components/Input.jsx";
+import Button from "../components/Button.jsx";
 
 function Dashboard() {
   const { state, dispatch } = useGlobal();
@@ -96,7 +98,7 @@ function Dashboard() {
           </div>
 
           <div className="avatar-input">
-            <input
+            <Input
               type="file"
               hidden
               accept="image/*"
@@ -104,7 +106,7 @@ function Dashboard() {
               disabled={isUploading}
               ref={imageRef}
             />
-            <button
+            <Button
               onClick={() => {
                 if (!isUploading) {
                   imageRef.current.click();
@@ -112,7 +114,7 @@ function Dashboard() {
               }}
             >
               Upload
-            </button>
+            </Button>
             <div className="user-details">
               <form onSubmit={(e) => e.preventDefault()}>
                 <div className="user-name">
@@ -129,7 +131,7 @@ function Dashboard() {
                 </div>
                 <div className="user-email">
                   {isEditing ? (
-                    <input
+                    <Input
                       type="email"
                       value={formData.email}
                       onChange={handleInputChange}
@@ -142,7 +144,7 @@ function Dashboard() {
                 <div className="form-buttons">
                   {isEditing ? (
                     <>
-                      <button
+                      <Button
                         type="button"
                         onClick={() => {
                           setIsEditing(false);
@@ -150,21 +152,21 @@ function Dashboard() {
                         }}
                       >
                         Save
-                      </button>
+                      </Button>
 
-                      <button type="button" onClick={handleCancel}>
+                      <Button type="button" onClick={handleCancel}>
                         Cancel
-                      </button>
+                      </Button>
                     </>
                   ) : (
-                    <button
+                    <Button
                       type="button"
                       onClick={() => {
                         setIsEditing(true);
                       }}
                     >
                       Edit
-                    </button>
+                    </Button>
                   )}
                 </div>
               </form>
