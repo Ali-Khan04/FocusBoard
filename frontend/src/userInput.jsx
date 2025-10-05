@@ -2,9 +2,11 @@ import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./CSS/userInput.css";
 import { useGlobal } from "./hooks/useGlobal";
+import { useTodos } from "./hooks/useTodos";
 
 function UserInput() {
   const { state, dispatch } = useGlobal();
+  const { fetchTodos } = useTodos();
   const [selectedPriority, setSelectedPriority] = useState("Medium");
 
   // Set default date to today
@@ -23,10 +25,55 @@ function UserInput() {
     });
   };
 
+  const sortTodosByPriority = () => {
+    const priorityOrder = { High: 1, Medium: 2, Low: 3 };
+    const sortedTodos = [...state.todo].sort((a, b) => {
+      const aPriority = priorityOrder[a.priority] || 2;
+      const bPriority = priorityOrder[b.priority] || 2;
+      return aPriority - bPriority;
+    });
+    dispatch({ type: "SET_TODOS", payload: sortedTodos });
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const { title, description, dueDate } = state.userInput;
 
+    if (!title.trim() || !description.trim()) {
+      dispatch({
+        type: "errorMessage",
+        payload: "Please fill in all fields",
+      });
+      return;
+    }
+    if (state.isGuest || !state.user) {
+      const newTodo = {
+        id: Date.now() + Math.random(),
+        title: title.trim(),
+        description: description.trim(),
+        dueDate,
+        priority: selectedPriority || "Medium",
+        createdAt: new Date().toLocaleDateString(),
+      };
+
+      dispatch({ type: "todo", payload: newTodo });
+      sortTodosByPriority();
+
+      dispatch({
+        type: "successMessage",
+        payload: "Todo added locally!",
+      });
+      dispatch({ type: "reset" });
+      setSelectedPriority("Medium");
+
+      // Reset date to today after submission
+      const today = new Date().toISOString().split("T")[0];
+      dispatch({
+        type: "userInput",
+        payload: { id: "dueDate", value: today },
+      });
+      return;
+    }
     try {
       const response = await fetch("http://localhost:3000/user/saveTodos", {
         method: "POST",
@@ -54,9 +101,12 @@ function UserInput() {
           id: savedTodo.id,
         },
       });
+
+      await fetchTodos();
+
       dispatch({
         type: "successMessage",
-        payload: "Todo added successfully!",
+        payload: "Todo saved to your account!",
       });
       dispatch({ type: "reset" });
       setSelectedPriority("Medium");
@@ -105,7 +155,7 @@ function UserInput() {
             value={state.userInput.dueDate}
             onChange={handleUserInput}
             id="dueDate"
-            min={new Date().toISOString().split("T")[0]} // Prevents users from selecting past dates
+            min={new Date().toISOString().split("T")[0]}
             required
           />
 
@@ -127,6 +177,19 @@ function UserInput() {
 
           <button type="submit">Add Todo</button>
 
+          {state.isGuest && (
+            <p
+              style={{
+                fontSize: "12px",
+                color: "#6c757d",
+                textAlign: "center",
+                marginTop: "8px",
+              }}
+            >
+              📝 Guest Mode - Todos stored locally
+            </p>
+          )}
+
           <Link
             to="/dashboard"
             style={{
@@ -141,6 +204,22 @@ function UserInput() {
             Go to Dashboard
           </Link>
         </form>
+        {state.flowMessage && (
+          <p
+            className={
+              state.messageType === "error"
+                ? "error-message"
+                : "success-message"
+            }
+            style={{
+              marginTop: "10px",
+              textAlign: "center",
+              fontSize: "14px",
+            }}
+          >
+            {state.flowMessage}
+          </p>
+        )}
       </div>
     </div>
   );

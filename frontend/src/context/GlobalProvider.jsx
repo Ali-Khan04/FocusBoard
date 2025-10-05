@@ -6,7 +6,7 @@ const initialState = {
   userInput: {
     title: "",
     description: "",
-    dueDate: new Date().toISOString().split("T")[0], // Default to today
+    dueDate: new Date().toISOString().split("T")[0],
   },
   userSignUp: {
     name: "",
@@ -20,6 +20,7 @@ const initialState = {
   flowMessage: "",
   messageType: "",
   user: JSON.parse(localStorage.getItem("user")) || null,
+  isGuest: JSON.parse(localStorage.getItem("isGuest")) || false,
 };
 const reducer = (state, action) => {
   switch (action.type) {
@@ -70,6 +71,7 @@ const reducer = (state, action) => {
           id: todo._id || todo.id,
         })),
       };
+
     case "updateTodoPriority":
       return {
         ...state,
@@ -100,8 +102,9 @@ const reducer = (state, action) => {
         flowMessage: "",
         messageType: "",
       };
+
     case "reset":
-      const today = new Date().toISOString().split("T")[0]; // Set dueDate to today because past dates are not allowed
+      const today = new Date().toISOString().split("T")[0];
       return {
         ...state,
         userInput: {
@@ -114,15 +117,28 @@ const reducer = (state, action) => {
       return { ...state, userSignUp: { name: "", email: "", password: "" } };
     case "SET_USER":
       localStorage.setItem("user", JSON.stringify(action.payload));
+      localStorage.removeItem("isGuest");
       return {
         ...state,
         user: action.payload,
+        isGuest: false,
       };
     case "Update_User":
       return { ...state, user: action.payload };
+
+    case "SET_GUEST_MODE":
+      localStorage.setItem("isGuest", "true");
+      return {
+        ...state,
+        isGuest: true,
+        user: null,
+      };
+
     case "logout":
       localStorage.removeItem("user");
-      return { ...state, user: null, todo: [] };
+      localStorage.removeItem("isGuest");
+      return { ...state, user: null, todo: [], isGuest: false };
+
     default:
       return state;
   }

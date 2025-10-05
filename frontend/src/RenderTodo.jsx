@@ -10,6 +10,24 @@ function RenderTodo() {
   const [updatingPriority, setUpdatingPriority] = useState({});
 
   const updateTodoPriority = async (todoId, newPriority) => {
+    // for  Guest mode
+    if (state.isGuest) {
+      dispatch({
+        type: "updateTodoPriority",
+        payload: { id: todoId, priority: newPriority },
+      });
+      setTimeout(() => {
+        const priorityOrder = { High: 1, Medium: 2, Low: 3 };
+        const sortedTodos = [...state.todo].sort((a, b) => {
+          const aPriority = priorityOrder[a.priority] || 2;
+          const bPriority = priorityOrder[b.priority] || 2;
+          return aPriority - bPriority;
+        });
+        dispatch({ type: "SET_TODOS", payload: sortedTodos });
+      }, 0);
+
+      return;
+    }
     setUpdatingPriority((prev) => ({ ...prev, [todoId]: true }));
 
     try {
@@ -29,12 +47,12 @@ function RenderTodo() {
         throw new Error("Failed to update priority");
       }
 
-      const updatedTodo = await response.json();
       dispatch({
         type: "updateTodoPriority",
         payload: { id: todoId, priority: newPriority },
       });
-      //fetch todos for latest re-order
+
+      // Fetch todos for immediate re-order
       await fetchTodos();
     } catch (error) {
       console.error("Error updating priority:", error);
@@ -61,7 +79,7 @@ function RenderTodo() {
     }
   };
 
-  if (loading) {
+  if (loading && !state.isGuest) {
     return (
       <div className="loading-container">
         <p>Loading your todos...</p>
@@ -69,7 +87,7 @@ function RenderTodo() {
     );
   }
 
-  if (error) {
+  if (error && !state.isGuest) {
     return (
       <div className="error-container">
         <p>Error: {error}</p>
@@ -77,6 +95,7 @@ function RenderTodo() {
       </div>
     );
   }
+
   const todos = state.todo;
 
   return (
@@ -87,7 +106,21 @@ function RenderTodo() {
       <>
         <div className="welcome-header">
           <h2>
-            {!state.user ? (
+            {state.isGuest ? (
+              <>
+                Welcome, Guest! 👋
+                <span
+                  style={{
+                    fontSize: "14px",
+                    display: "block",
+                    marginTop: "8px",
+                    color: "#666",
+                  }}
+                >
+                  Your todos are stored locally
+                </span>
+              </>
+            ) : !state.user ? (
               "Sign In for more functionality"
             ) : (
               <>

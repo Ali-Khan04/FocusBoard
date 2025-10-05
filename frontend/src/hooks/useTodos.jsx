@@ -8,7 +8,9 @@ export const useTodos = () => {
   const [hasInitialFetch, setHasInitialFetch] = useState(false);
 
   const fetchTodos = async () => {
-    if (!state.user) return;
+    if (!state.user || state.isGuest) {
+      return;
+    }
 
     setLoading(true);
     setError(null);
@@ -41,18 +43,20 @@ export const useTodos = () => {
   };
 
   useEffect(() => {
-    if (state.user && !hasInitialFetch && !loading) {
+    if (state.user && !state.isGuest && !hasInitialFetch && !loading) {
       fetchTodos();
     }
-  }, [state.user, hasInitialFetch]);
+  }, [state.user, state.isGuest, hasInitialFetch]);
 
   useEffect(() => {
-    if (!state.user) {
+    if (!state.user || state.isGuest) {
       setHasInitialFetch(false);
       setError(null);
-      dispatch({ type: "SET_TODOS", payload: [] });
+      if (!state.isGuest && !state.user) {
+        dispatch({ type: "SET_TODOS", payload: [] });
+      }
     }
-  }, [state.user]);
+  }, [state.user, state.isGuest]);
 
   return {
     loading,
