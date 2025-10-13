@@ -1,4 +1,4 @@
-// src/services/api.js
+
 const BASE_URL = "http://localhost:3000";
 
 export const apiRequest = async (endpoint, method = "GET", body = null) => {
@@ -8,7 +8,7 @@ export const apiRequest = async (endpoint, method = "GET", body = null) => {
       headers: {
         "Content-Type": "application/json",
       },
-      credentials: "include", // include cookies if needed
+      credentials: "include",
     };
     if (body) {
       options.body = JSON.stringify(body);

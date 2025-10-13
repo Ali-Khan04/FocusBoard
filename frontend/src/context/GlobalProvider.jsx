@@ -145,6 +145,7 @@ const reducer = (state, action) => {
 };
 function GlobalProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  console.log("Current state:", state);
   return (
     <GlobalContext.Provider value={{ state, dispatch }}>
       {children}
