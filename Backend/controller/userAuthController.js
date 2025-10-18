@@ -56,6 +56,7 @@ export const userController = {
         secure: false,
         sameSite: "lax",
       });
+
       res.status(200).json({
         message: "Login successful",
         token,
@@ -68,6 +69,24 @@ export const userController = {
     } catch (err) {
       console.error("Error in signIn:", err);
       next(errorHandler(500, "Internal server error while signing in"));
+    }
+  },
+
+  logout: async (req, res, next) => {
+    try {
+      res.clearCookie("token", {
+        httpOnly: true,
+        secure: false,
+        sameSite: "lax",
+      });
+
+      res.status(200).json({
+        success: true,
+        message: "Logged out successfully",
+      });
+    } catch (err) {
+      console.error("Error in logout:", err);
+      next(errorHandler(500, "Error logging out"));
     }
   },
 };

@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import userTodosRouter from "./routes/TodosRoute.js";
-import userSignUpRouter from "./routes/userRoute.js";
+import userRouter from "./routes/userRoute.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
   res.send("Server running");
 });
 app.use("/user", userTodosRouter);
-app.use("/auth", authLimiter, userSignUpRouter);
+app.use("/auth", authLimiter, userRouter);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

@@ -1,13 +1,26 @@
 import { useGlobal } from "../hooks/useGlobal.jsx";
 import { useNavigate } from "react-router-dom";
 import RenderTodo from "../components/RenderTodo.jsx";
+import { apiRequest } from "../services/api.js";
 
 function Todo() {
   const { dispatch, state } = useGlobal();
   const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await apiRequest("/auth/logout", "POST");
+      dispatch({ type: "logout" });
+      navigate("/signIn");
+    } catch (error) {
+      console.error("Logout failed:", error);
+      alert("Error logging out. Please try again.");
+    }
+  };
+
   const handleClick = () => {
     if (state.user) {
-      dispatch({ type: "logout" });
+      handleLogout();
     } else {
       navigate("/signIn");
     }
@@ -32,6 +45,7 @@ function Todo() {
       >
         {!state.user ? "Sign In" : "Logout"}
       </button>
+
       <h1
         style={{
           textAlign: "center",
