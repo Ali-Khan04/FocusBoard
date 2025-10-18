@@ -5,11 +5,13 @@ import { useGlobal } from "../hooks/useGlobal.jsx";
 import { useTodos } from "../hooks/useTodos.jsx";
 import Button from "./Button.jsx";
 import { apiRequest } from "../services/api.js";
+import UpdateTodo from "./UpdateTodo.jsx";
 
 function RenderTodo() {
   const { state, dispatch } = useGlobal();
   const { loading, error, fetchTodos } = useTodos();
   const [updatingPriority, setUpdatingPriority] = useState({});
+  const [editingTodo, setEditingTodo] = useState(null);
 
   const updateTodoPriority = async (todoId, newPriority) => {
     // for guest mode
@@ -56,6 +58,43 @@ function RenderTodo() {
     updateTodoPriority(todoId, newPriority);
   };
 
+  const handleTodoUpdated = (updatedTodo) => {
+    dispatch({
+      type: "SET_TODOS",
+      payload: state.todo.map((t) =>
+        t.id === updatedTodo.id ? updatedTodo : t
+      ),
+    });
+  };
+
+  const markTodoAsDone = async (todoId) => {
+    if (state.isGuest) {
+      dispatch({
+        type: "delete",
+        payload: todoId,
+      });
+      return;
+    }
+
+    try {
+      const response = await apiRequest(`/user/markDone/${todoId}`, "PATCH");
+
+      if (response.success) {
+        dispatch({
+          type: "SET_TODOS",
+          payload: state.todo.filter((t) => t.id !== todoId),
+        });
+
+        alert("Todo marked as done!");
+      } else {
+        alert("Failed to mark todo as done.");
+      }
+    } catch (error) {
+      console.error("Error marking todo as done:", error);
+      alert("An error occurred while marking todo done.");
+    }
+  };
+
   const getPriorityColor = (priority) => {
     switch (priority) {
       case "High":
@@ -87,6 +126,30 @@ function RenderTodo() {
   }
 
   const todos = state.todo;
+  const deleteTodo = async (todoId) => {
+    // Guest mode to delete locally
+    if (state.isGuest) {
+      dispatch({ type: "delete", payload: todoId });
+      return;
+    }
+
+    try {
+      const response = await apiRequest(`/user/deleteTodo/${todoId}`, "DELETE");
+
+      if (response.success) {
+        dispatch({
+          type: "SET_TODOS",
+          payload: state.todo.filter((t) => t.id !== todoId),
+        });
+        alert("Todo deleted successfully!");
+      } else {
+        alert("Failed to delete todo.");
+      }
+    } catch (error) {
+      console.error("Error deleting todo:", error);
+      alert("An error occurred while deleting todo.");
+    }
+  };
 
   return (
     <>
@@ -186,19 +249,26 @@ function RenderTodo() {
                 </div>
 
                 <div className="edit-buttons">
+                  <Button onClick={() => deleteTodo(item.id)}>Delete</Button>
+                  <Button onClick={() => setEditingTodo(item)}>Update</Button>
                   <Button
-                    onClick={() =>
-                      dispatch({ type: "delete", payload: item.id })
-                    }
+                    style={{ backgroundColor: "blue" }}
+                    onClick={() => markTodoAsDone(item.id)}
                   >
-                    Delete
+                    Mark Done
                   </Button>
-                  <Button>Update</Button>
                 </div>
               </div>
             );
           })}
         </div>
+        {editingTodo && (
+          <UpdateTodo
+            todo={editingTodo}
+            onClose={() => setEditingTodo(null)}
+            onUpdated={handleTodoUpdated}
+          />
+        )}
       </>
     </>
   );

@@ -41,11 +41,6 @@ const reducer = (state, action) => {
         },
       };
 
-    case "delete":
-      return {
-        ...state,
-        todo: state.todo.filter((item) => item.id !== action.payload),
-      };
     case "signUp":
       return {
         ...state,
@@ -145,7 +140,7 @@ const reducer = (state, action) => {
 };
 function GlobalProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
-  console.log("Current state:", state);
+
   return (
     <GlobalContext.Provider value={{ state, dispatch }}>
       {children}
