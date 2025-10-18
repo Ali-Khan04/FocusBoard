@@ -1,9 +1,14 @@
+import mongoose from "mongoose";
 import Todo from "../db/TodoSchema.js";
 import { errorHandler } from "../utils/customError.js";
 
 export const getTodos = async (req, res, next) => {
   try {
     const userId = req.user.id;
+
+    if (!userId) return next(errorHandler(401, "User not authenticated"));
+    if (!mongoose.Types.ObjectId.isValid(userId))
+      return next(errorHandler(400, "Invalid Id format"));
 
     const page = parseInt(req.query.page) || 0;
     const limit = parseInt(req.query.limit) || 10;
