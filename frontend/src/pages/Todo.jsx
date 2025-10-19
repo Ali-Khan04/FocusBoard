@@ -1,6 +1,6 @@
 import { useGlobal } from "../hooks/useGlobal.jsx";
 import { useNavigate } from "react-router-dom";
-import RenderTodo from "../components/RenderTodo.jsx";
+import RenderTodo from "../components/Todos/RenderTodo.jsx";
 import { apiRequest } from "../services/api.js";
 
 function Todo() {
