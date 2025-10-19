@@ -8,13 +8,10 @@ export const useTodos = () => {
   const [hasInitialFetch, setHasInitialFetch] = useState(false);
 
   const fetchTodos = async () => {
-    if (!state.user || state.isGuest) {
-      return;
-    }
+    if (!state.user || state.isGuest) return;
 
     setLoading(true);
     setError(null);
-
     try {
       const response = await fetch("http://localhost:3000/user/getTodos", {
         method: "GET",
@@ -24,15 +21,11 @@ export const useTodos = () => {
 
       if (response.ok) {
         const data = await response.json();
-        dispatch({ type: "SET_TODOS", payload: data.todos });
+        dispatch({ type: "SET_TODOS", payload: data.todos || [] });
         setHasInitialFetch(true);
       } else {
-        if (response.status === 404 || response.status === 200) {
-          dispatch({ type: "SET_TODOS", payload: [] });
-          setHasInitialFetch(true);
-        } else {
-          setError("Failed to fetch todos");
-        }
+        dispatch({ type: "SET_TODOS", payload: [] });
+        setHasInitialFetch(true);
       }
     } catch (err) {
       setError("Error fetching todos");
@@ -48,20 +41,5 @@ export const useTodos = () => {
     }
   }, [state.user, state.isGuest, hasInitialFetch]);
 
-  useEffect(() => {
-    if (!state.user || state.isGuest) {
-      setHasInitialFetch(false);
-      setError(null);
-      if (!state.isGuest && !state.user) {
-        dispatch({ type: "SET_TODOS", payload: [] });
-      }
-    }
-  }, [state.user, state.isGuest]);
-
-  return {
-    loading,
-    error,
-    fetchTodos,
-    hasData: hasInitialFetch,
-  };
+  return { loading, error, fetchTodos, hasData: hasInitialFetch };
 };

@@ -15,11 +15,8 @@ function UserInput() {
   // Set default date to today
   useEffect(() => {
     const today = new Date().toISOString().split("T")[0];
-    dispatch({
-      type: "userInput",
-      payload: { id: "dueDate", value: today },
-    });
-  }, []);
+    dispatch({ type: "userInput", payload: { id: "dueDate", value: today } });
+  }, [dispatch]);
 
   const handleUserInput = (e) => {
     dispatch({
@@ -28,53 +25,46 @@ function UserInput() {
     });
   };
 
-  const sortTodosByPriority = () => {
+  const sortArrayByPriority = (arr) => {
     const priorityOrder = { High: 1, Medium: 2, Low: 3 };
-    const sortedTodos = [...state.todo].sort((a, b) => {
-      const aPriority = priorityOrder[a.priority] || 2;
-      const bPriority = priorityOrder[b.priority] || 2;
-      return aPriority - bPriority;
-    });
-    dispatch({ type: "SET_TODOS", payload: sortedTodos });
+    return arr
+      .slice()
+      .sort(
+        (a, b) =>
+          (priorityOrder[a.priority] || 2) - (priorityOrder[b.priority] || 2)
+      );
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const { title, description, dueDate } = state.userInput;
 
-    if (!title.trim() || !description.trim()) {
-      dispatch({
-        type: "errorMessage",
-        payload: "Please fill in all fields",
-      });
+    if (!title?.trim() || !description?.trim()) {
+      dispatch({ type: "errorMessage", payload: "Please fill in all fields" });
       return;
     }
+
+    const priority = selectedPriority || "Medium";
+
     if (state.isGuest || !state.user) {
       const newTodo = {
         id: Date.now() + Math.random(),
         title: title.trim(),
         description: description.trim(),
         dueDate,
-        priority: selectedPriority || "Medium",
+        priority,
         createdAt: new Date().toLocaleDateString(),
       };
 
-      dispatch({ type: "todo", payload: newTodo });
-      sortTodosByPriority();
+      //new sorted todos locally
+      const newTodos = sortArrayByPriority([...state.todo, newTodo]);
 
-      dispatch({
-        type: "successMessage",
-        payload: "Todo added locally!",
-      });
+      dispatch({ type: "ADD_TODO", payload: newTodo });
+      dispatch({ type: "successMessage", payload: "Todo added locally!" });
       dispatch({ type: "reset" });
       setSelectedPriority("Medium");
-
-      // Reset date to today after submission
       const today = new Date().toISOString().split("T")[0];
-      dispatch({
-        type: "userInput",
-        payload: { id: "dueDate", value: today },
-      });
+      dispatch({ type: "userInput", payload: { id: "dueDate", value: today } });
       return;
     }
     try {
@@ -82,17 +72,10 @@ function UserInput() {
         title,
         description,
         dueDate,
-        priority: selectedPriority || "Medium",
+        priority,
       });
 
-      dispatch({
-        type: "todo",
-        payload: {
-          ...savedTodo,
-          id: savedTodo.id,
-        },
-      });
-
+      //refresh from backend for logged users
       await fetchTodos();
 
       dispatch({
@@ -102,12 +85,8 @@ function UserInput() {
       dispatch({ type: "reset" });
       setSelectedPriority("Medium");
 
-      // Reset date to today after submission
       const today = new Date().toISOString().split("T")[0];
-      dispatch({
-        type: "userInput",
-        payload: { id: "dueDate", value: today },
-      });
+      dispatch({ type: "userInput", payload: { id: "dueDate", value: today } });
     } catch (err) {
       console.error("Error saving todo:", err);
       dispatch({
@@ -195,6 +174,7 @@ function UserInput() {
             Go to Dashboard
           </Link>
         </form>
+
         {state.flowMessage && (
           <p
             className={
@@ -202,11 +182,7 @@ function UserInput() {
                 ? "error-message"
                 : "success-message"
             }
-            style={{
-              marginTop: "10px",
-              textAlign: "center",
-              fontSize: "14px",
-            }}
+            style={{ marginTop: "10px", textAlign: "center", fontSize: "14px" }}
           >
             {state.flowMessage}
           </p>

@@ -8,6 +8,7 @@ export default function TodoList({
   fetchTodos,
   state,
   setEditingTodo,
+  isCompleted = false,
 }) {
   if (!todos || todos.length === 0) return <EmptyTodo />;
 
@@ -21,6 +22,7 @@ export default function TodoList({
           fetchTodos={fetchTodos}
           state={state}
           setEditingTodo={setEditingTodo}
+          isCompleted={isCompleted}
         />
       ))}
     </div>

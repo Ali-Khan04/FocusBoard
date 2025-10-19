@@ -2,8 +2,10 @@ import { useState } from "react";
 import { apiRequest } from "../services/api.js";
 import Button from "./Button.jsx";
 import "../CSS/updateTodo.css";
+import { useGlobal } from "../hooks/useGlobal.jsx";
 
 function UpdateTodo({ todo, onClose, onUpdated }) {
+  const { state, dispatch } = useGlobal();
   const [formData, setFormData] = useState({
     title: todo.title || "",
     description: todo.description || "",
@@ -20,6 +22,24 @@ function UpdateTodo({ todo, onClose, onUpdated }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
+
+    if (state.isGuest) {
+      dispatch({
+        type: "update",
+        payload: {
+          id: todo.id,
+          update: formData,
+        },
+      });
+      dispatch({
+        type: "successMessage",
+        payload: "Todo updated locally!",
+      });
+      onClose();
+      setLoading(false);
+      return;
+    }
+
     try {
       const res = await apiRequest(
         `/user/updateTodo/${todo.id}`,

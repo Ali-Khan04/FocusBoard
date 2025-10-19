@@ -8,6 +8,7 @@ export default function TodoItem({
   fetchTodos,
   state,
   setEditingTodo,
+  isCompleted = false,
 }) {
   const getPriorityColor = (priority) => {
     switch (priority) {
@@ -57,6 +58,7 @@ export default function TodoItem({
         dispatch={dispatch}
         state={state}
         setEditingTodo={setEditingTodo}
+        isCompleted={isCompleted}
       />
     </div>
   );

@@ -3,6 +3,8 @@ import { apiRequest } from "../../services/api.js";
 import "../../CSS/renderTodo.css";
 
 export default function TodoActions({ item, dispatch, state, setEditingTodo }) {
+  const isCompleted = state.completed?.some((t) => t.id === item.id);
+
   const deleteTodo = async (todoId) => {
     if (state.isGuest) {
       dispatch({ type: "delete", payload: todoId });
@@ -17,7 +19,7 @@ export default function TodoActions({ item, dispatch, state, setEditingTodo }) {
 
   const markDone = async (todoId) => {
     if (state.isGuest) {
-      dispatch({ type: "delete", payload: todoId });
+      dispatch({ type: "markDone", payload: todoId });
       return;
     }
     await apiRequest(`/user/markDone/${todoId}`, "PATCH");
@@ -29,11 +31,16 @@ export default function TodoActions({ item, dispatch, state, setEditingTodo }) {
 
   return (
     <div className="edit-buttons">
-      <Button onClick={() => deleteTodo(item.id)}>Delete</Button>
-      <Button onClick={() => setEditingTodo(item)}>Update</Button>
+      <Button onClick={() => deleteTodo(item.id)} disabled={isCompleted}>
+        Delete
+      </Button>
+      <Button onClick={() => setEditingTodo(item)} disabled={isCompleted}>
+        Update
+      </Button>
       <Button
         style={{ backgroundColor: "blue" }}
         onClick={() => markDone(item.id)}
+        disabled={isCompleted}
       >
         Mark Done
       </Button>
