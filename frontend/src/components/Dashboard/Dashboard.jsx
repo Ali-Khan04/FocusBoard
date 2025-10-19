@@ -5,6 +5,7 @@ import StatsSummary from "./Analytics/StatsSummary.jsx";
 import OverdueList from "./Analytics/OverdueList.jsx";
 import UserProfile from "./Profile/UserProfile.jsx";
 import "../../CSS/mainDashBoard.css";
+import { apiRequest } from "../../services/api.js";
 
 export default function Dashboard() {
   const { state, dispatch } = useGlobal();
@@ -14,11 +15,7 @@ export default function Dashboard() {
   useEffect(() => {
     const fetchTodos = async () => {
       try {
-        const response = await fetch(
-          "http://localhost:3000/user/getTodos?limit=1000",
-          { credentials: "include" }
-        );
-        const data = await response.json();
+        const data = await apiRequest("/user/getTodos?limit=1000", "GET");
         setTodos(data.todos || []);
       } catch (error) {
         console.error("Error fetching todos:", error);
@@ -29,8 +26,14 @@ export default function Dashboard() {
     fetchTodos();
   }, []);
 
-  const handleLogout = () => {
-    dispatch({ type: "logout" });
+  const handleLogout = async () => {
+    try {
+      await apiRequest("/auth/logout", "POST");
+      dispatch({ type: "logout" });
+    } catch (err) {
+      console.error("Logout failed:", err);
+      alert("Error logging out. Please try again.");
+    }
   };
 
   return (

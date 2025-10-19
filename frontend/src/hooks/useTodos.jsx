@@ -25,7 +25,6 @@ export const useTodos = () => {
       if (response.ok) {
         const data = await response.json();
         dispatch({ type: "SET_TODOS", payload: data.todos });
-        console.log("GetTodos: ", data.todos);
         setHasInitialFetch(true);
       } else {
         if (response.status === 404 || response.status === 200) {
