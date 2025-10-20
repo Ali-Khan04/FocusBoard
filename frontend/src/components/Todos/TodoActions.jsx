@@ -1,4 +1,4 @@
-import Button from "../Button.jsx";
+import Button from "../shared/Button.jsx";
 import { apiRequest } from "../../services/api.js";
 import "../../CSS/renderTodo.css";
 

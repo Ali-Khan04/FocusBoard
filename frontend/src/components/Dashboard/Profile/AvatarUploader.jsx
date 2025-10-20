@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import defaultImage from "../../../assets/imageSkeleton.png";
-import Input from "../../Input.jsx";
-import Button from "../../Button.jsx";
+import Input from "../../shared/Input.jsx";
+import Button from "../../shared/Input.jsx";
 import "../../../CSS/Profile.css";
 
 export default function AvatarUploader() {

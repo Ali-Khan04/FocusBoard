@@ -1,10 +1,10 @@
-import Button from "../Button.jsx";
+import Button from "../shared/Button.jsx";
 import { useState } from "react";
 import { useGlobal } from "../../hooks/useGlobal.jsx";
 import { useTodos } from "../../hooks/useTodos.jsx";
-import UserInput from "../UserInput.jsx";
+import UserInput from "./userInput.jsx";
 import TodoList from "./TodoList.jsx";
-import UpdateTodo from "../UpdateTodo.jsx";
+import UpdateTodo from "./UpdateTodo.jsx";
 import "../../CSS/renderTodo.css";
 
 function RenderTodo() {

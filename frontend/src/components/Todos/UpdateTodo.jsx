@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { apiRequest } from "../services/api.js";
-import Button from "./Button.jsx";
-import "../CSS/updateTodo.css";
-import { useGlobal } from "../hooks/useGlobal.jsx";
+import { apiRequest } from "../../services/api.js";
+import Button from "../shared/Button.jsx";
+import "../../CSS/updateTodo.css";
+import { useGlobal } from "../../hooks/useGlobal.jsx";
 
-function UpdateTodo({ todo, onClose, onUpdated }) {
+function UpdateTodo({ todo, onClose }) {
   const { state, dispatch } = useGlobal();
   const [formData, setFormData] = useState({
     title: todo.title || "",
@@ -26,10 +26,7 @@ function UpdateTodo({ todo, onClose, onUpdated }) {
     if (state.isGuest) {
       dispatch({
         type: "update",
-        payload: {
-          id: todo.id,
-          update: formData,
-        },
+        payload: { id: todo.id, update: formData },
       });
       dispatch({
         type: "successMessage",
@@ -47,7 +44,10 @@ function UpdateTodo({ todo, onClose, onUpdated }) {
         formData
       );
       if (res.success) {
-        onUpdated(res.todo);
+        dispatch({
+          type: "successMessage",
+          payload: "Todo updated successfully!",
+        });
         onClose();
       } else {
         alert(res.message || "Update failed");

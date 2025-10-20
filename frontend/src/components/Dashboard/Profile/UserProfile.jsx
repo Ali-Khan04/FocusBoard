@@ -1,8 +1,8 @@
 import { useState, useRef } from "react";
 import { useGlobal } from "../../../hooks/useGlobal.jsx";
 import AvatarUploader from "./AvatarUploader.jsx";
-import Input from "../../Input.jsx";
-import Button from "../../Button.jsx";
+import Input from "../../shared/Input.jsx";
+import Button from "../../shared/Button.jsx";
 import "../../../CSS/Profile.css";
 
 export default function UserProfile() {
