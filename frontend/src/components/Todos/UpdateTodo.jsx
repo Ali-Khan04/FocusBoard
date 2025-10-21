@@ -48,6 +48,11 @@ function UpdateTodo({ todo, onClose }) {
           type: "successMessage",
           payload: "Todo updated successfully!",
         });
+        dispatch({
+          type: "update",
+          payload: { id: todo.id, update: formData },
+        });
+
         onClose();
       } else {
         alert(res.message || "Update failed");

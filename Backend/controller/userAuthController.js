@@ -26,6 +26,7 @@ export const userController = {
           id: savedUser._id,
           name: savedUser.name,
           email: savedUser.email,
+          avatar: savedUser.avatar || "",
         },
       });
     } catch (err) {
@@ -59,11 +60,12 @@ export const userController = {
 
       res.status(200).json({
         message: "Login successful",
-        token,
+
         user: {
           id: user._id,
           name: user.name,
           email: user.email,
+          avatar: user.avatar || "",
         },
       });
     } catch (err) {

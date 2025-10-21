@@ -149,6 +149,7 @@ const reducer = (state, action) => {
       return { ...state, user: action.payload, isGuest: false };
 
     case "Update_User":
+      localStorage.setItem("user", JSON.stringify(action.payload));
       return { ...state, user: action.payload };
 
     case "SET_GUEST_MODE":
