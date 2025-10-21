@@ -2,6 +2,7 @@ import { useGlobal } from "../hooks/useGlobal.jsx";
 import { useNavigate } from "react-router-dom";
 import RenderTodo from "../components/Todos/RenderTodo.jsx";
 import { apiRequest } from "../services/api.js";
+import "../CSS/Notification.css";
 
 function Todo() {
   const { dispatch, state } = useGlobal();
@@ -42,18 +43,9 @@ function Todo() {
     <>
       {state.flowMessage && (
         <p
-          style={{
-            textAlign: "center",
-            fontWeight: "500",
-            marginTop: "15px",
-            fontSize: "15px",
-            color:
-              state.messageType === "error"
-                ? "#ff5252"
-                : state.messageType === "success"
-                ? "#28a745"
-                : "#333",
-          }}
+          className={`global-message ${
+            state.messageType === "error" ? "error-text" : "success-text"
+          }`}
         >
           {state.flowMessage}
         </p>
@@ -76,7 +68,6 @@ function Todo() {
       >
         {!state.user ? "Sign In" : "Logout"}
       </button>
-
       <h1
         style={{
           textAlign: "center",
@@ -88,7 +79,6 @@ function Todo() {
       >
         Todo App
       </h1>
-
       <RenderTodo />
     </>
   );

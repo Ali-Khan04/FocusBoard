@@ -1,12 +1,9 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../../CSS/userInput.css";
 import Input from "../shared/Input";
 import Button from "../shared/Button";
 import { useUserInput } from "../../hooks/useUserInput";
 import PrioritySelectorUI from "../shared/PrioritySelectorUi";
-import MessageDisplay from "../shared/MessageDisplay";
-import { useGlobal } from "../../hooks/useGlobal.jsx";
 
 function UserInput() {
   const {
@@ -16,18 +13,6 @@ function UserInput() {
     handleUserInput,
     handleSubmit,
   } = useUserInput();
-
-  const { dispatch } = useGlobal();
-
-  useEffect(() => {
-    if (state.flowMessage) {
-      const timer = setTimeout(() => {
-        dispatch({ type: "clearMessage" });
-      }, 2000);
-
-      return () => clearTimeout(timer);
-    }
-  }, [state.flowMessage, dispatch]);
 
   return (
     <div className="input-container">
@@ -96,11 +81,6 @@ function UserInput() {
             Go to Dashboard
           </Link>
         </form>
-
-        <MessageDisplay
-          flowMessage={state.flowMessage}
-          messageType={state.messageType}
-        />
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useGlobal } from "./useGlobal.jsx";
+import { apiRequest } from "../services/api.js";
 
 export const useTodos = () => {
   const { state, dispatch } = useGlobal();
@@ -12,24 +13,17 @@ export const useTodos = () => {
 
     setLoading(true);
     setError(null);
-    try {
-      const response = await fetch("http://localhost:3000/user/getTodos", {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-      });
 
-      if (response.ok) {
-        const data = await response.json();
-        dispatch({ type: "SET_TODOS", payload: data.todos || [] });
-        setHasInitialFetch(true);
-      } else {
-        dispatch({ type: "SET_TODOS", payload: [] });
-        setHasInitialFetch(true);
-      }
+    try {
+      const data = await apiRequest("/user/getTodos", "GET");
+
+      dispatch({ type: "SET_TODOS", payload: data.todos || [] });
+      setHasInitialFetch(true);
     } catch (err) {
-      setError("Error fetching todos");
       console.error("Error fetching todos:", err);
+      setError(err.message || "Failed to fetch todos");
+      dispatch({ type: "SET_TODOS", payload: [] });
+      setHasInitialFetch(true);
     } finally {
       setLoading(false);
     }
