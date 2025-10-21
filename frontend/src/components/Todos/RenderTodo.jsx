@@ -1,9 +1,10 @@
+import Button from "../shared/Button.jsx";
 import { useState } from "react";
 import { useGlobal } from "../../hooks/useGlobal.jsx";
 import { useTodos } from "../../hooks/useTodos.jsx";
-import UserInput from "../UserInput.jsx";
+import UserInput from "./userInput.jsx";
 import TodoList from "./TodoList.jsx";
-import UpdateTodo from "../UpdateTodo.jsx";
+import UpdateTodo from "./UpdateTodo.jsx";
 import "../../CSS/renderTodo.css";
 
 function RenderTodo() {
@@ -12,6 +13,18 @@ function RenderTodo() {
   const [editingTodo, setEditingTodo] = useState(null);
 
   const todos = state.todo;
+  const completed = state.completed;
+
+  const handleClearCompleted = () => {
+    dispatch({ type: "SET_COMPLETED", payload: [] });
+    dispatch({
+      type: "successMessage",
+      payload: "Cleared all completed todos!",
+    });
+    setTimeout(() => {
+      dispatch({ type: "clearMessage" });
+    }, 2000);
+  };
 
   return (
     <>
@@ -26,7 +39,9 @@ function RenderTodo() {
         <h2>
           {state.isGuest
             ? "Welcome, Guest 👋"
-            : `Welcome back, ${state.user?.name} 👋`}
+            : state.user
+            ? `Welcome back, ${state.user.name || "User"} 👋`
+            : "Welcome 👋"}
         </h2>
         <p>
           {todos.length > 0
@@ -42,6 +57,24 @@ function RenderTodo() {
         state={state}
         setEditingTodo={setEditingTodo}
       />
+      {completed.length > 0 && (
+        <div className="clear-section">
+          <h3>✅ Completed Todos</h3>
+          <Button onClick={handleClearCompleted}>Clear Completed</Button>
+        </div>
+      )}
+      {completed.length > 0 && (
+        <div className="completed-section">
+          <TodoList
+            todos={completed}
+            dispatch={dispatch}
+            fetchTodos={fetchTodos}
+            state={state}
+            setEditingTodo={setEditingTodo}
+            isCompleted={true}
+          />
+        </div>
+      )}
 
       {editingTodo && (
         <UpdateTodo todo={editingTodo} onClose={() => setEditingTodo(null)} />

@@ -2,6 +2,7 @@ import { useGlobal } from "../hooks/useGlobal.jsx";
 import { useNavigate } from "react-router-dom";
 import RenderTodo from "../components/Todos/RenderTodo.jsx";
 import { apiRequest } from "../services/api.js";
+import "../CSS/Notification.css";
 
 function Todo() {
   const { dispatch, state } = useGlobal();
@@ -11,11 +12,23 @@ function Todo() {
     try {
       await apiRequest("/auth/logout", "POST");
       dispatch({ type: "logout" });
+
+      dispatch({
+        type: "successMessage",
+        payload: "Logged out successfully ",
+      });
+
       navigate("/signIn");
     } catch (error) {
       console.error("Logout failed:", error);
-      alert("Error logging out. Please try again.");
+      dispatch({
+        type: "errorMessage",
+        payload: "Error logging out. Please try again.",
+      });
     }
+    setTimeout(() => {
+      dispatch({ type: "clearMessage" });
+    }, 2000);
   };
 
   const handleClick = () => {
@@ -28,6 +41,16 @@ function Todo() {
 
   return (
     <>
+      {state.flowMessage && (
+        <p
+          className={`global-message ${
+            state.messageType === "error" ? "error-text" : "success-text"
+          }`}
+        >
+          {state.flowMessage}
+        </p>
+      )}
+
       <button
         onClick={handleClick}
         style={{
@@ -45,7 +68,6 @@ function Todo() {
       >
         {!state.user ? "Sign In" : "Logout"}
       </button>
-
       <h1
         style={{
           textAlign: "center",
@@ -57,7 +79,6 @@ function Todo() {
       >
         Todo App
       </h1>
-
       <RenderTodo />
     </>
   );

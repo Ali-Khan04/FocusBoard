@@ -1,41 +1,81 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import defaultImage from "../../../assets/imageSkeleton.png";
-import Input from "../../Input.jsx";
-import Button from "../../Button.jsx";
+import Button from "../../shared/Button.jsx";
+import { apiRequest } from "../../../services/api.js";
+import { useGlobal } from "../../../hooks/useGlobal.jsx";
 import "../../../CSS/Profile.css";
 
 export default function AvatarUploader() {
-  const [image, setImage] = useState("");
+  const { state, dispatch } = useGlobal();
+  const [image, setImage] = useState(state.user?.avatar || "");
   const [imageError, setImageError] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [uploaded, setUploaded] = useState(false);
-  const imageRef = useRef(null);
+  const fileInputRef = useRef(null);
+
+  useEffect(() => {
+    if (state.user?.avatar) {
+      setImage(state.user.avatar);
+    } else {
+      setImage("");
+    }
+  }, [state.user?.avatar]);
 
   const handleImage = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     if (file.size > 5 * 1024 * 1024) {
-      alert("File size exceeds 5MB");
+      dispatch({ type: "errorMessage", payload: "File size exceeds 5MB" });
+      clearFlowMessage();
       return;
     }
 
     if (!file.type.startsWith("image/")) {
-      alert("Invalid file format");
+      dispatch({ type: "errorMessage", payload: "Invalid file format" });
+      clearFlowMessage();
       return;
     }
 
-    setIsUploading(true);
-    setImageError(false);
-
     const reader = new FileReader();
-    reader.onload = () => {
-      setImage(reader.result);
-      setIsUploading(false);
-      setUploaded(true);
-      setTimeout(() => setUploaded(false), 2000);
+    reader.onload = async () => {
+      const base64 = reader.result;
+      setImage(base64);
+      await uploadAvatar(base64);
     };
     reader.readAsDataURL(file);
+  };
+
+  const uploadAvatar = async (base64Image) => {
+    setIsUploading(true);
+
+    try {
+      const res = await apiRequest("/auth/avatar", "PATCH", {
+        avatar: base64Image,
+      });
+
+      if (res?.user) {
+        dispatch({ type: "Update_User", payload: res.user });
+        dispatch({
+          type: "successMessage",
+          payload: "Avatar uploaded successfully ✅",
+        });
+        localStorage.setItem("user", JSON.stringify(res.user));
+      } else {
+        dispatch({ type: "errorMessage", payload: "Failed to upload avatar" });
+      }
+    } catch (err) {
+      console.error("Avatar Upload Error:", err);
+      dispatch({
+        type: "errorMessage",
+        payload: "Network error, please try again",
+      });
+    } finally {
+      setIsUploading(false);
+
+      setTimeout(() => {
+        dispatch({ type: "clearMessage" });
+      }, 2000);
+    }
   };
 
   return (
@@ -47,24 +87,33 @@ export default function AvatarUploader() {
           <img src={defaultImage} alt="default" />
         )}
         {isUploading && <p>Uploading...</p>}
-        {uploaded && !isUploading && <p>Uploaded!</p>}
+
+        {state.flowMessage && (
+          <p
+            className={
+              state.messageType === "error" ? "error-text" : "success-text"
+            }
+          >
+            {state.flowMessage}
+          </p>
+        )}
       </div>
 
       <div className="avatar-actions">
-        <Input
+        <input
           type="file"
-          hidden
           accept="image/*"
+          hidden
           onChange={handleImage}
-          ref={imageRef}
+          ref={fileInputRef}
         />
         <Button
           type="button"
           onClick={() => {
-            if (!isUploading) imageRef.current.click();
+            if (!isUploading) fileInputRef.current?.click();
           }}
         >
-          Upload
+          {isUploading ? "Uploading..." : "Upload"}
         </Button>
       </div>
     </div>

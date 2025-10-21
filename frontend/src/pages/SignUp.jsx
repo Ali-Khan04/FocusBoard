@@ -1,8 +1,8 @@
 import "../CSS/signUp.css";
 import { useNavigate, Link } from "react-router-dom";
 import { useGlobal } from "../hooks/useGlobal.jsx";
-import Button from "../components/Button.jsx";
-import Input from "../components/Input.jsx";
+import Button from "../components/shared/Button.jsx";
+import Input from "../components/shared/Input.jsx";
 import { apiRequest } from "../services/api.js";
 
 function SignUp() {
