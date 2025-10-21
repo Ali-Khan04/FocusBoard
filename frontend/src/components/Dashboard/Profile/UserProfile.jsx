@@ -32,14 +32,10 @@ export default function UserProfile() {
       confirmPassword: "",
     });
     setIsEditing(false);
-    setError("");
-    setSuccess("");
   };
 
   const handleSave = async () => {
     setLoading(true);
-    setError("");
-    setSuccess("");
 
     try {
       const payload = {
@@ -59,16 +55,27 @@ export default function UserProfile() {
 
       if (res?.user) {
         dispatch({ type: "Update_User", payload: res.user });
+        dispatch({
+          type: "successMessage",
+          payload: "Profile Updated successfully ✅",
+        });
         localStorage.setItem("user", JSON.stringify(res.user));
 
-        setSuccess("Profile updated successfully ✅");
         setIsEditing(false);
+      } else {
+        dispatch({ type: "errorMessage", payload: "Failed to update profile" });
       }
     } catch (err) {
-      setError(err.message || "Failed to update profile");
+      dispatch({
+        type: "errorMessage",
+        payload: "Network Error, Please Try again",
+      });
     } finally {
       setLoading(false);
     }
+    setTimeout(() => {
+      dispatch({ type: "clearMessage" });
+    }, 2000);
   };
 
   return (
@@ -133,8 +140,15 @@ export default function UserProfile() {
             </>
           )}
 
-          {error && <p className="error-text">{error}</p>}
-          {success && <p className="success-text">{success}</p>}
+          {state.flowMessage && (
+            <p
+              className={
+                state.messageType === "error" ? "error-text" : "success-text"
+              }
+            >
+              {state.flowMessage}
+            </p>
+          )}
 
           <div className="form-buttons">
             {isEditing ? (

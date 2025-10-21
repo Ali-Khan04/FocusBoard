@@ -20,7 +20,6 @@ function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = state.userSignIn;
-    dispatch({ type: "clearMessage" });
 
     try {
       const data = await apiRequest("/auth/signIn", "POST", {
@@ -38,14 +37,14 @@ function SignIn() {
           err.message || "Error Signing In. Please check your connection.",
       });
     }
+    setTimeout(() => {
+      dispatch({ type: "clearMessage" });
+    }, 2000);
   };
 
   const handleGuestMode = () => {
     dispatch({ type: "SET_GUEST_MODE" });
-    dispatch({
-      type: "successMessage",
-      payload: "Continuing as guest. Your todos will be stored locally.",
-    });
+
     navigate("/todo");
   };
 
@@ -75,7 +74,6 @@ function SignIn() {
           </Button>
         </form>
 
-        {/* Guest Mode Button */}
         <Button
           type="button"
           onClick={handleGuestMode}

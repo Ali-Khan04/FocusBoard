@@ -11,11 +11,23 @@ function Todo() {
     try {
       await apiRequest("/auth/logout", "POST");
       dispatch({ type: "logout" });
+
+      dispatch({
+        type: "successMessage",
+        payload: "Logged out successfully ",
+      });
+
       navigate("/signIn");
     } catch (error) {
       console.error("Logout failed:", error);
-      alert("Error logging out. Please try again.");
+      dispatch({
+        type: "errorMessage",
+        payload: "Error logging out. Please try again.",
+      });
     }
+    setTimeout(() => {
+      dispatch({ type: "clearMessage" });
+    }, 2000);
   };
 
   const handleClick = () => {
@@ -28,6 +40,25 @@ function Todo() {
 
   return (
     <>
+      {state.flowMessage && (
+        <p
+          style={{
+            textAlign: "center",
+            fontWeight: "500",
+            marginTop: "15px",
+            fontSize: "15px",
+            color:
+              state.messageType === "error"
+                ? "#ff5252"
+                : state.messageType === "success"
+                ? "#28a745"
+                : "#333",
+          }}
+        >
+          {state.flowMessage}
+        </p>
+      )}
+
       <button
         onClick={handleClick}
         style={{

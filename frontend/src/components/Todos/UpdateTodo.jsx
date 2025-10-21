@@ -14,7 +14,6 @@ function UpdateTodo({ todo, onClose }) {
       : "",
   });
   const [loading, setLoading] = useState(false);
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.id]: e.target.value });
   };
@@ -32,6 +31,10 @@ function UpdateTodo({ todo, onClose }) {
         type: "successMessage",
         payload: "Todo updated locally!",
       });
+      setTimeout(() => {
+        dispatch({ type: "clearMessage" });
+      }, 2000);
+
       onClose();
       setLoading(false);
       return;
@@ -43,25 +46,35 @@ function UpdateTodo({ todo, onClose }) {
         "PATCH",
         formData
       );
+
       if (res.success) {
-        dispatch({
-          type: "successMessage",
-          payload: "Todo updated successfully!",
-        });
         dispatch({
           type: "update",
           payload: { id: todo.id, update: formData },
         });
-
-        onClose();
+        dispatch({
+          type: "successMessage",
+          payload: "Todo updated successfully!",
+        });
       } else {
-        alert(res.message || "Update failed");
+        dispatch({
+          type: "errorMessage",
+          payload: res.message || "Update failed",
+        });
       }
     } catch (err) {
       console.error("Error updating todo:", err);
-      alert("Server error while updating todo");
+      dispatch({
+        type: "errorMessage",
+        payload: "Server error while updating todo",
+      });
     } finally {
+      setTimeout(() => {
+        dispatch({ type: "clearMessage" });
+      }, 2000);
+
       setLoading(false);
+      onClose();
     }
   };
 
@@ -69,6 +82,17 @@ function UpdateTodo({ todo, onClose }) {
     <div className="update-modal">
       <div className="update-content">
         <h2>Update Todo</h2>
+        {state.flowMessage && (
+          <p
+            className={
+              state.messageType === "error" ? "error-text" : "success-text"
+            }
+            style={{ textAlign: "center", marginBottom: "10px" }}
+          >
+            {state.flowMessage}
+          </p>
+        )}
+
         <form onSubmit={handleSubmit}>
           <label htmlFor="title">Title</label>
           <input

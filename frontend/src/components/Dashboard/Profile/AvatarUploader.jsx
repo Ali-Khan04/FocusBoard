@@ -10,8 +10,6 @@ export default function AvatarUploader() {
   const [image, setImage] = useState(state.user?.avatar || "");
   const [imageError, setImageError] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
-  const [uploaded, setUploaded] = useState(false);
-  const [errorMsg, setErrorMsg] = useState("");
   const fileInputRef = useRef(null);
 
   useEffect(() => {
@@ -27,12 +25,14 @@ export default function AvatarUploader() {
     if (!file) return;
 
     if (file.size > 5 * 1024 * 1024) {
-      setErrorMsg("File size exceeds 5MB");
+      dispatch({ type: "errorMessage", payload: "File size exceeds 5MB" });
+      clearFlowMessage();
       return;
     }
 
     if (!file.type.startsWith("image/")) {
-      setErrorMsg("Invalid file format");
+      dispatch({ type: "errorMessage", payload: "Invalid file format" });
+      clearFlowMessage();
       return;
     }
 
@@ -40,7 +40,6 @@ export default function AvatarUploader() {
     reader.onload = async () => {
       const base64 = reader.result;
       setImage(base64);
-      setErrorMsg("");
       await uploadAvatar(base64);
     };
     reader.readAsDataURL(file);
@@ -48,7 +47,6 @@ export default function AvatarUploader() {
 
   const uploadAvatar = async (base64Image) => {
     setIsUploading(true);
-    setUploaded(false);
 
     try {
       const res = await apiRequest("/auth/avatar", "PATCH", {
@@ -57,16 +55,26 @@ export default function AvatarUploader() {
 
       if (res?.user) {
         dispatch({ type: "Update_User", payload: res.user });
+        dispatch({
+          type: "successMessage",
+          payload: "Avatar uploaded successfully ✅",
+        });
         localStorage.setItem("user", JSON.stringify(res.user));
-
-        setUploaded(true);
-        setTimeout(() => setUploaded(false), 2000);
+      } else {
+        dispatch({ type: "errorMessage", payload: "Failed to upload avatar" });
       }
     } catch (err) {
       console.error("Avatar Upload Error:", err);
-      setErrorMsg(err.message || "Failed to upload avatar");
+      dispatch({
+        type: "errorMessage",
+        payload: "Network error, please try again",
+      });
     } finally {
       setIsUploading(false);
+
+      setTimeout(() => {
+        dispatch({ type: "clearMessage" });
+      }, 2000);
     }
   };
 
@@ -79,10 +87,16 @@ export default function AvatarUploader() {
           <img src={defaultImage} alt="default" />
         )}
         {isUploading && <p>Uploading...</p>}
-        {uploaded && !isUploading && (
-          <p className="success-text">Uploaded ✅</p>
+
+        {state.flowMessage && (
+          <p
+            className={
+              state.messageType === "error" ? "error-text" : "success-text"
+            }
+          >
+            {state.flowMessage}
+          </p>
         )}
-        {errorMsg && <p className="error-text">{errorMsg}</p>}
       </div>
 
       <div className="avatar-actions">
