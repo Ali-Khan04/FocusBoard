@@ -37,6 +37,50 @@
 .logout-btn:hover {
   background-color: #e53e3e;
 }
+.no-todos-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  margin: 40px auto;
+  max-width: 600px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 107, 107, 0.1) 0%,
+    rgba(255, 153, 153, 0.1) 100%
+  );
+  border-radius: 16px;
+  border: 2px dashed rgba(255, 107, 107, 0.3);
+  text-align: center;
+}
+
+.no-todos-section p {
+  margin: 8px 0;
+  font-size: 18px;
+  color: #666;
+  line-height: 1.6;
+}
+.back-btn {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: #ff5252;
+  color: white;
+}
+.back-btn {
+  color: white;
+}
+
+.back-btn:hover {
+  transform: translateY(-1px);
+}
 
 @media (max-width: 900px) {
   .dashboard-container {

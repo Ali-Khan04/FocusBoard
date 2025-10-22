@@ -53,6 +53,7 @@ export const editTodo = {
       next(errorHandler(500, "Internal Server Error while Deleting Todo"));
     }
   },
+  
   updateTodoPriority: async (req, res, next) => {
     const { userId, todoId, priority } = req;
     try {

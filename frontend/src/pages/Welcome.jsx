@@ -7,8 +7,11 @@ export default function Welcome() {
   return (
     <div className="welcome-container">
       <div className="welcome-content">
-        <h1>Welcome to My TodoApp</h1>
-        <p>Organize your tasks efficiently and stay productive every day!</p>
+        <h1>Welcome to FocusBoard</h1>{" "}
+        <p>
+          Streamline your workflow, visualize your progress, and take control of
+          your productivity — all in one powerful dashboard.
+        </p>
         <div className="welcome-buttons">
           <button className="signup-btn" onClick={() => navigate("/signup")}>
             Sign Up

@@ -142,6 +142,8 @@ const reducer = (state, action) => {
     }
     case "signUpReset":
       return { ...state, userSignUp: { name: "", email: "", password: "" } };
+    case "signInReset":
+      return { ...state, userSignIn: { email: "", password: "" } };
 
     case "SET_USER":
       localStorage.setItem("user", JSON.stringify(action.payload));

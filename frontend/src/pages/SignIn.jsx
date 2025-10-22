@@ -29,6 +29,7 @@ function SignIn() {
 
       dispatch({ type: "SET_USER", payload: data.user });
       dispatch({ type: "successMessage", payload: "Sign In Successful!" });
+      dispatch({ type: "signInReset" });
       navigate("/todo");
     } catch (err) {
       dispatch({
