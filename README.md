@@ -1,48 +1,67 @@
-# 📝 Fullstack Todo App
+# 🧠 FocusBoard 
 
-A comprehensive task management solution built with the **MERN stack** (MongoDB, Express.js, React, Node.js). This app empowers users to organize their tasks, set priorities, and manage deadlines effectively, all with a clean and modern UI.
+A full-stack productivity dashboard built with the MERN stack — designed not just to manage tasks, but to help you analyze your focus.
+
+FocusBoard transforms everyday todo management into a data-driven experience, combining clean UI, smooth UX, and powerful backend logic — all engineered from scratch.
 
 ---
-* ✅ **User Authentication** (JWT-based)
-* 👤 **User Dashboard** with personalized experience
-* 🗂️ **CRUD Operations** on todos
-* 📅 **Due Dates** for tasks (planned: email reminders)
-* 🔍 **Filter & Search** through todos
-* 📱 Fully responsive UI with modern design
-* 🛠️ Built with clean code, reusable components, and scalable folder structure
 
-**🛠️ Tech Stack**
-| **Frontend** | **Backend** | **Database** | **Styling** |
-|--------------|-------------|--------------|-------------|
-| React        | Express     | MongoDB      | CSS         |
+## 📸 Screenshots
 
-**🏗️ Architecture Highlights**
+### Dashboard Analytics
+![Landing Page](assets/DashBoard.png)
 
-**Advanced State Management**
-* **useReducer + Context API** instead of basic useState
-* Centralized state architecture with predictable updates
-* No prop drilling - clean component hierarchy
-* Action-based state mutations (similar to Redux patterns)
+### Todo Management
+![Todo Form](assets/Todos.png)
 
-**Scalable Architecture**
-* Custom hooks for reusable logic (useTodos for data fetching)
-* User-specific data persistence across page refreshes
-* Separation of concerns with clear folder structure
-* Component composition over inheritance
-* Future-ready for complex features like real-time updates
+### Add New Tasks
+![Dashboard](assets/TodoForm.png)
 
-**User Experience Features**
-* Personalized dashboard showing user-specific todos
-* Seamless authentication flow with persistent login
-* Smart data fetching that prevents unnecessary API calls
-* Loading states and error handling for better UX
+### Guest Mode
+![Guest Mode](assets/guestMode.png)
 
-**Why This Approach?**
-While most todo apps use simple `useState`, this project demonstrates:
-* How to handle complex state interactions
-* Professional-level React patterns used in production apps
-* Scalable foundation that can grow into larger applications
-* Real-world data fetching and caching strategies
 
-**⚠️ Disclaimer**
-This project is currently under active development. Some features may be missing or incomplete.
+---
+
+## 🚀 Key Highlights
+
+* 🔐 **JWT Authentication & Secure Sessions** — with protected routes and persistent login
+* 👤 **Profile Management** — update name, email, password, and upload avatars
+* 🗂️ **Task Operations (CRUD)** — create, edit, delete, and mark todos as completed
+* 📊 **Dashboard Analytics** — visualize your productivity patterns in real time
+* 🧭 **Guest Mode** — try the full app instantly without signing up
+* 🔔 **Unified Notification System** — global success/error messages with auto-clear
+* 📅 **Due Dates & Priorities** — intelligent organization and reminders
+* 💡 **Modern UI/UX** — built for clarity, speed, and focus
+
+---
+
+## 🧱 Tech Stack
+
+| Frontend | Backend | Database | Styling |
+|----------|---------|----------|---------|
+| React (Vite) | Express.js | MongoDB (Mongoose) | Custom CSS |
+
+---
+
+## ⚙️ Architecture & Engineering
+
+* 🧠 **Global State Management** via `useReducer` + Context API → predictable updates and no prop drilling
+* 🧩 **Modular Backend** with middlewares for validation, authentication, and error handling
+* 🌍 **Centralized API Layer** using `apiRequest` for cleaner network logic
+* 🔄 **Smart Data Fetching** — prevents redundant calls with local caching
+* 🧰 **Reusable Hooks** (`useTodos`, `useUserInput`) for elegant abstraction
+* 🧠 **Scalable Folder Structure** — production-ready and easy to maintain
+
+---
+
+## 🎯 The Goal Behind FocusBoard
+
+FocusBoard was built to go beyond "just another todo app." It's a demonstration of real-world full-stack architecture, scalable React design patterns, and clean, maintainable backend logic, developed under real-world constraints (university workload + deployment readiness).
+
+---
+
+## 🏗️ Future Enhancements
+
+* 📩 Email reminders for approaching due dates
+* 🔍 Advanced search and filtering capabilities
