@@ -8,17 +8,17 @@ FocusBoard transforms everyday todo management into a data-driven experience, co
 
 ## 📸 Screenshots
 
-### Dashboard Analytics
-![Landing Page](assets/DashBoard.png)
+### Dashboard Analytics  
+![Dashboard Analytics](./frontend/src/assets/DashBoard.png)
 
-### Todo Management
-![Todo Form](assets/Todos.png)
+### Todo Management  
+![Todo Management](./frontend/src/assets/Todos.png)
 
-### Add New Tasks
-![Dashboard](assets/TodoForm.png)
+### Add New Tasks  
+![Add New Tasks](./frontend/src/assets/TodoForm.png)
 
-### Guest Mode
-![Guest Mode](assets/guestMode.png)
+### Guest Mode  
+![Guest Mode](./frontend/src/assets/guestMode.png)
 
 
 ---
