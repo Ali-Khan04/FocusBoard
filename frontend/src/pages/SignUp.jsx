@@ -8,15 +8,60 @@ import { apiRequest } from "../services/api.js";
 function SignUp() {
   const { state, dispatch } = useGlobal();
   const navigate = useNavigate();
+
   const handleFormData = (e) => {
     dispatch({
       type: "signUp",
       payload: { id: e.target.id, value: e.target.value },
     });
   };
+
+  const clearMessage = () => {
+    setTimeout(() => {
+      dispatch({ type: "clearMessage" });
+    }, 2000);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, email, password } = state.userSignUp;
+
+    if (!name || !email || !password) {
+      dispatch({
+        type: "errorMessage",
+        payload: "All fields are required",
+      });
+      clearMessage();
+      return;
+    }
+
+    if (name.trim().length < 3 || name.trim().length > 30) {
+      dispatch({
+        type: "errorMessage",
+        payload: "Name must be between 3 and 30 characters",
+      });
+      clearMessage();
+      return;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      dispatch({
+        type: "errorMessage",
+        payload: "Invalid email format",
+      });
+      clearMessage();
+      return;
+    }
+
+    if (password.length < 6) {
+      dispatch({
+        type: "errorMessage",
+        payload: "Password must be at least 6 characters",
+      });
+      clearMessage();
+      return;
+    }
 
     try {
       const data = await apiRequest("/auth/signUp", "POST", {
@@ -31,6 +76,7 @@ function SignUp() {
       });
 
       dispatch({ type: "signUpReset" });
+      clearMessage();
 
       setTimeout(() => {
         navigate("/signIn");
@@ -40,15 +86,14 @@ function SignUp() {
         type: "errorMessage",
         payload: err.message || "Error registering user",
       });
+      clearMessage();
     }
-    setTimeout(() => {
-      dispatch({ type: "clearMessage" });
-    }, 2000);
   };
+
   return (
     <div className="signup-page">
       <div className="sign-up-container">
-        <h1>SignUp</h1>
+        <h1>Sign Up</h1>
         <form onSubmit={handleSubmit}>
           <Input
             type="text"
@@ -69,12 +114,12 @@ function SignUp() {
           <Input
             type="password"
             required
-            placeholder="password"
+            placeholder="Password"
             id="password"
             value={state.userSignUp.password}
             onChange={handleFormData}
           />
-          <Button className="button-sign">SignUp</Button>
+          <Button className="button-sign">Sign Up</Button>
         </form>
         <Link to="/signin">Already have an account? Sign In</Link>
         {state.flowMessage && (

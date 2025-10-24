@@ -8,23 +8,33 @@ import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 
+dotenv.config();
+
 const app = express();
 app.use(cookieParser());
 app.use(helmet());
 //to support larger file uploads
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
+
+const allowedOrigin =
+  process.env.NODE_ENV === "production"
+    ? process.env.FRONTEND_URL
+    : "http://localhost:5173";
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: allowedOrigin,
     credentials: true,
   })
 );
-dotenv.config();
 mongoose
-  .connect(process.env.MONGO)
+  .connect(process.env.MONGO, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
   .then(() => console.log("Connected to MongoDB"))
-  .catch((err) => console.log("MongoDB connection failed", err));
+  .catch((err) => console.error("MongoDB connection failed", err));
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -46,6 +56,5 @@ app.use((err, req, res, next) => {
     message,
   });
 });
-app.listen(3000, () => {
-  console.log("Server running in 3000");
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));

@@ -37,6 +37,9 @@ function Todo() {
     } else {
       navigate("/signIn");
     }
+    setTimeout(() => {
+      dispatch({ type: "clearMessage" });
+    }, 2000);
   };
 
   return (
