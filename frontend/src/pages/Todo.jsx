@@ -3,43 +3,36 @@ import { useNavigate } from "react-router-dom";
 import RenderTodo from "../components/Todos/RenderTodo.jsx";
 import { apiRequest } from "../services/api.js";
 import "../CSS/Notification.css";
+import { useState } from "react";
 
 function Todo() {
   const { dispatch, state } = useGlobal();
   const navigate = useNavigate();
+  const [loggingOut, setLoggingOut] = useState(false);
 
   const handleLogout = async () => {
+    setLoggingOut(true);
     try {
       await apiRequest("/auth/logout", "POST");
       dispatch({ type: "logout" });
-
-      dispatch({
-        type: "successMessage",
-        payload: "Logged out successfully ",
-      });
-
+      dispatch({ type: "successMessage", payload: "Logged out successfully " });
       navigate("/signIn");
-    } catch (error) {
-      console.error("Logout failed:", error);
+    } catch {
       dispatch({
         type: "errorMessage",
         payload: "Error logging out. Please try again.",
       });
+    } finally {
+      setLoggingOut(false);
+      setTimeout(() => {
+        dispatch({ type: "clearMessage" });
+      }, 2000);
     }
-    setTimeout(() => {
-      dispatch({ type: "clearMessage" });
-    }, 2000);
   };
 
   const handleClick = () => {
-    if (state.user) {
-      handleLogout();
-    } else {
-      navigate("/signIn");
-    }
-    setTimeout(() => {
-      dispatch({ type: "clearMessage" });
-    }, 2000);
+    if (state.user) handleLogout();
+    else navigate("/signIn");
   };
 
   return (
@@ -56,21 +49,11 @@ function Todo() {
 
       <button
         onClick={handleClick}
-        style={{
-          position: "absolute",
-          top: "20px",
-          right: "20px",
-          padding: "10px 15px",
-          backgroundColor: "#ff5252",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-          fontWeight: "bold",
-        }}
+        className={loggingOut ? "logout-loading" : "btn-logout"}
       >
         {!state.user ? "Sign In" : "Logout"}
       </button>
+
       <h1
         style={{
           textAlign: "center",
@@ -80,8 +63,9 @@ function Todo() {
           color: "#ff5252",
         }}
       >
-        Todo App
+        FocusBoard
       </h1>
+
       <RenderTodo />
     </>
   );

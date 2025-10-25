@@ -57,7 +57,7 @@ export function useUserInput() {
       resetForm();
       return;
     }
-
+    dispatch({ type: "isLoading", payload: true });
     try {
       await apiRequest("/user/saveTodos", "POST", {
         title,
@@ -71,13 +71,18 @@ export function useUserInput() {
         payload: "Todo saved to your account!",
       });
       resetForm();
+      dispatch({ type: "isLoading", payload: false });
     } catch (err) {
       console.error("Error saving todo:", err);
       dispatch({
         type: "errorMessage",
         payload: "Failed to save todo. Please try again.",
       });
+      dispatch({ type: "isLoading", payload: false });
     }
+    setTimeout(() => {
+      dispatch({ type: "clearMessage" });
+    }, 2000);
   };
 
   const resetForm = () => {

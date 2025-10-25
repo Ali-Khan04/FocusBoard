@@ -52,7 +52,12 @@ function UserInput() {
             onChange={setSelectedPriority}
           />
 
-          <Button type="submit">Add Todo</Button>
+          <Button
+            type="submit"
+            className={state.isLoading ? "add-loading" : undefined}
+          >
+            Add
+          </Button>
 
           {state.isGuest && (
             <p

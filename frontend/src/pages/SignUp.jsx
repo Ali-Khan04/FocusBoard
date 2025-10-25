@@ -25,6 +25,7 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { name, email, password } = state.userSignUp;
+    dispatch({ type: "isLoading", payload: true });
 
     if (!name || !email || !password) {
       dispatch({
@@ -74,7 +75,7 @@ function SignUp() {
         type: "successMessage",
         payload: "User registered successfully!",
       });
-
+      dispatch({ type: "isLoading", payload: false });
       dispatch({ type: "signUpReset" });
       clearMessage();
 
@@ -86,6 +87,7 @@ function SignUp() {
         type: "errorMessage",
         payload: err.message || "Error registering user",
       });
+      dispatch({ type: "isLoading", payload: false });
       clearMessage();
     }
   };
@@ -119,7 +121,12 @@ function SignUp() {
             value={state.userSignUp.password}
             onChange={handleFormData}
           />
-          <Button className="button-sign">Sign Up</Button>
+          <Button
+            type="submit"
+            className={state.isLoading ? "signUp-loading" : "button-sign"}
+          >
+            SignUp
+          </Button>
         </form>
         <Link to="/signin">Already have an account? Sign In</Link>
         {state.flowMessage && (

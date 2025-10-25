@@ -20,7 +20,7 @@ function SignIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const { email, password } = state.userSignIn;
-
+    dispatch({ type: "isLoading", payload: true });
     try {
       const data = await apiRequest("/auth/signIn", "POST", {
         email,
@@ -30,6 +30,7 @@ function SignIn() {
       dispatch({ type: "SET_USER", payload: data.user });
       dispatch({ type: "successMessage", payload: "Sign In Successful!" });
       dispatch({ type: "signInReset" });
+      dispatch({ type: "isLoading", payload: false });
       navigate("/todo");
     } catch (err) {
       dispatch({
@@ -37,6 +38,7 @@ function SignIn() {
         payload:
           err.message || "Error Signing In. Please check your connection.",
       });
+      dispatch({ type: "isLoading", payload: false });
     }
     setTimeout(() => {
       dispatch({ type: "clearMessage" });
@@ -70,8 +72,11 @@ function SignIn() {
             value={state.userSignIn.password}
             onChange={hanldeUserInput}
           />
-          <Button type="submit" className="button-sign">
-            Sign In
+          <Button
+            type="submit"
+            className={state.isLoading ? "signUp-loading" : "button-sign"}
+          >
+            SignIn
           </Button>
         </form>
 

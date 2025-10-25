@@ -16,6 +16,7 @@ const initialState = {
   messageType: "",
   user: JSON.parse(localStorage.getItem("user")) || null,
   isGuest: JSON.parse(localStorage.getItem("isGuest")) || false,
+  isLoading: false,
 };
 
 const reducer = (state, action) => {
@@ -153,6 +154,8 @@ const reducer = (state, action) => {
     case "Update_User":
       localStorage.setItem("user", JSON.stringify(action.payload));
       return { ...state, user: action.payload };
+    case "isLoading":
+      return { ...state, isLoading: action.payload };
 
     case "SET_GUEST_MODE":
       localStorage.setItem("isGuest", "true");
