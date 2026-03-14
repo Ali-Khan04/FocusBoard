@@ -45,6 +45,10 @@ mongoose
 app.get("/", (req, res) => {
   res.send("Server running");
 });
+app.get("/health", (req, res) => {
+  res.status(200).send("OK");
+});
+
 app.use("/user", userTodosRouter);
 app.use("/auth", userRouter);
 
