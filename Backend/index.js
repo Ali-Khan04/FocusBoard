@@ -45,9 +45,15 @@ mongoose
 app.get("/", (req, res) => {
   res.send("Server running");
 });
-app.get("/health", (req, res) => {
-  res.status(200).send("OK");
+app.get("/health", async (req, res) => {
+  try {
+    await mongoose.connection.db.admin().ping();
+    res.status(200).send("DB reachable, OK");
+  } catch (err) {
+    res.status(500).send("DB not reachable");
+  }
 });
+
 
 app.use("/user", userTodosRouter);
 app.use("/auth", userRouter);
