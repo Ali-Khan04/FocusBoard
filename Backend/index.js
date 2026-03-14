@@ -5,7 +5,7 @@ import userRouter from "./routes/userRoute.js";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
-import rateLimit from "express-rate-limit";
+// import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 
 dotenv.config();
@@ -36,17 +36,17 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.error("MongoDB connection failed", err));
 
-const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 10,
-  message: "Too many login attempts, try again later",
-});
+// const authLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 10,
+//   message: "Too many login attempts, try again later",
+// });
 
 app.get("/", (req, res) => {
   res.send("Server running");
 });
 app.use("/user", userTodosRouter);
-app.use("/auth", authLimiter, userRouter);
+app.use("/auth", userRouter);
 
 app.use((err, req, res, next) => {
   const statusCode = err.statusCode || 500;

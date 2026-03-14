@@ -31,6 +31,7 @@ export default function Dashboard() {
     try {
       await apiRequest("/auth/logout", "POST");
       dispatch({ type: "logout" });
+      navigate("/signIn");
     } catch (err) {
       console.error("Logout failed:", err);
     }
