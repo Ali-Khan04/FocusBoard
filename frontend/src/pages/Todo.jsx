@@ -47,24 +47,15 @@ function Todo() {
         </p>
       )}
 
-      <button
-        onClick={handleClick}
-        className={loggingOut ? "logout-loading" : "btn-logout"}
-      >
-        {!state.user ? "Sign In" : "Logout"}
-      </button>
-
-      <h1
-        style={{
-          textAlign: "center",
-          margin: "1.5rem 0",
-          fontSize: "2.5rem",
-          fontWeight: "bold",
-          color: "#ff5252",
-        }}
-      >
-        FocusBoard
-      </h1>
+      <div className="todo-page-header">
+        <h1 className="todo-page-title">FocusBoard</h1>
+        <button
+          onClick={handleClick}
+          className={loggingOut ? "logout-loading" : "btn-logout"}
+        >
+          {!state.user ? "Sign In" : "Logout"}
+        </button>
+      </div>
 
       <RenderTodo />
     </>

@@ -107,3 +107,17 @@ button:hover {
     transform: translate(-50%, -50%) rotate(360deg);
   }
 }
+
+@media (max-width: 768px) {
+  .input-container {
+    margin: 1rem;
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+
+  .btn-add,
+  button,
+  .add-loading {
+    width: 100%;
+  }
+}

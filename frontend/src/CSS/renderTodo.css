@@ -206,8 +206,13 @@
     padding: 0 1rem;
   }
 
-  .todo-contianer {
+  .todo-container {
     padding: 1.5rem;
+  }
+
+  .todo-container button {
+    width: 100%;
+    margin-right: 0;
   }
 
   .priority-section {
@@ -217,6 +222,15 @@
 
   .edit-buttons {
     flex-direction: column;
+    width: 100%;
+  }
+
+  .welcome-header {
+    padding: 0 1rem;
+  }
+
+  .welcome-header h2 {
+    font-size: 1.4rem;
   }
 }
 
